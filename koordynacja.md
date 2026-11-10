@@ -30,6 +30,15 @@ and finish it.
 ## 3. End
 Log with the account in the header, `stan.json` with the field `konto`, a line in `przebiegi/`, commit only your own files.
 
+## Chat sessions
+- Every PR opened by a chat session has the line `Sesja: <session id>` in its description – the merge agent and the CEO
+  use it to tell the author about the verdict (check B-13).
+- After sending a PR for review the session **watches the verdict itself**: every few minutes (up to 2 h) it checks
+  `recenzent/stan.json` for its PRs and fixes the remarks at once. It does not finish until its PR chain is merged or is
+  waiting only for a dated decision. PR chains stall most often because the author does not see the verdict.
+- Numbered resources (e.g. database migrations) come from an allocation, or you check the main branch and open PRs
+  before choosing a number – two PRs with the same number only conflict after merging.
+
 ## Schedule change
 In one commit: a row in `koordynacja-odstepy.tsv` (all columns, `od` = the moment of change), an entry in
 `flota/zadania.yaml` (cron), `python3 flota/generuj.py`, tests: `python3 -m unittest discover flota` and

@@ -12,6 +12,7 @@ pozycja_bez_ruchu_h: 48           # A-07 – "w toku" (in progress) without a co
 termin_prawny_wyprzedzenie_dni: 14  # A-08 – legal, tax and app-store deadlines within this window have an order
 pr_otwarty_h: 24                  # B-01
 pr_bez_werdyktu_min: 60           # B-01
+pr_poprawki_min: 60               # B-13 – a "needs fixes" verdict on the current commit older than this many minutes = the author has not reacted
 werdykt_ok_niescalony_h: 2        # B-02 (start)
 pr_konflikty_max: 3               # B-03 (start)
 pr_konflikt_h: 12                 # B-03 (start)
