@@ -2,7 +2,9 @@
 # Levels: sam (agent performs it and reports) | ceo (CEO agent approves, entry "[Decyzja CEO]") |
 #          wlasciciel (decision D-… in decyzje.md from the chat) | operator (a human performs it – operator/kolejka.md) | nigdy
 # Action not on the list = wlasciciel. Extending the list = owner decision.
-# ENFORCEMENT: the hook .claude/hooks/uprawnienia.py blocks tools (Bash, MCP) that violate this table before they run.
+# ENFORCEMENT: the hook .claude/hooks/uprawnienia.py blocks tools (Bash, MCP, file writes) that violate this table before they run.
+#   Blocking is the DEFAULT: a command or tool not in dozwolone-polecenia.txt = action `spoza_listy`.
+#   It is a guard rail, not a sandbox – an interpreter on the list will run any code (README, "What the hook does not do").
 #   sam → agent from the `agenci` list (empty = anyone) · ceo → role ceo or DECYZJA=D-… (with the ID of a decision in decyzje.md)
 #   · wlasciciel → only with DECYZJA=D-… · operator → performed by a human, never by an agent · nigdy → nothing helps.
 #   `agenci` = who performs the action at this level; `sam: [...]` = roles that do it on their own despite a higher level.
@@ -45,4 +47,6 @@ czynnosci:
   zlecenie_innemu_agentowi:             { poziom: sam }
   nowy_agent_lub_zadanie_cykliczne:     { poziom: ceo,        warunki: "wiersz w backlog.md (PM), koszt w flota/zadania.yaml" }
   zmiana_zasad_lub_uprawnien:           { poziom: wlasciciel }
+  zapis_decyzji:                        { poziom: ceo,        warunki: "decyzje/ and decyzje.md are written by the CEO (the owner issues the decision in the chat); other roles – with DECYZJA=D-…" }
+  spoza_listy:                          { poziom: wlasciciel, warunki: "command or tool not in dozwolone-polecenia.txt – the hook denies by default; adding to the list goes through a PR" }
   kasowanie_danych_osobowych:           { poziom: wlasciciel }

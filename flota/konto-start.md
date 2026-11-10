@@ -33,6 +33,9 @@ python3 flota/generuj.py --konto B --wyjscie ~/<prefiks>-prompty-b    # prompts 
 - Each JSON line = one task (`taskId` `<prefiks>-<agent>-<konto>`, cron, description, prompt from a file). **Create them in list order**
   (first `<prefiks>-limit-<konto>` – the pace regulator).
 - After creating: "Run now" for the reviewer, customer service and the PM; check the mode of each task.
+- **A task's model** is set in the task itself (the model field in the call from the list, or `model:` in the frontmatter
+  of its `SKILL.md`). The `"model"` key in `settings.local.json` does not work for scheduled tasks in the desktop app – check
+  the model in the header of the first run. Keep models with a separate weekly limit for the tasks that need them.
 - When moving the fleet, the old account **disables** its tasks (does not delete them); the fleet account goes in `org.yaml → runtime.konto`.
 - `scripts/przebieg.sh start <agent> <konto>` accepts any letter A–Z; limit file `~/.<prefiks>-limit-<K>.json`.
 

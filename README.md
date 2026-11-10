@@ -31,7 +31,7 @@ Two humans stay in the loop: the **owner** (decisions) and the **operator** (acc
 ## What is in the core
 | Mechanism | Where |
 |---|---|
-| Fail-closed permissions hook – every external action is checked against `uprawnienia.yaml`, not against the agent's judgement | `.claude/hooks/uprawnienia.py` |
+| Default-deny permissions hook – a shell command, tool or MCP server outside the allowlist does not run without the owner's decision; external actions are checked against `uprawnienia.yaml`, not against the agent's judgement; a hook error blocks. Limits: see "What the hook does not do" | `.claude/hooks/uprawnienia.py`, `dozwolone-polecenia.txt` |
 | Tamper-evident audit log (SHA-256 chain) and a HALT file that stops the fleet | `bezpieczenstwo/` |
 | Watchdog without an LLM – missed runs, stuck work, unanswered orders; runs in GitHub Actions every 15 minutes | `moduly/straznik/` |
 | Merge queue – a script computes the facts, a merge agent merges, the hook enforces the reviewer's verdict | `scripts/scalanie.py`, `ceo/scalanie/` |
@@ -43,6 +43,27 @@ Two humans stay in the loop: the **owner** (decisions) and the **operator** (acc
 
 Not in the core (part of the full template): the library of further roles, managerial controls and KPIs, the profitability
 model, company policies and the business processes – see `docs/poza-rdzeniem.md`.
+
+## What the hook does not do
+
+The permissions hook is **a guard rail, not a sandbox**. It splits every shell command into parts (including `$(…)`,
+pipes, `bash -c`, `find -exec`, `xargs`) and lets through only parts that start with an entry from
+`dozwolone-polecenia.txt`; tools and MCP servers outside the list are blocked too. The default list is tuned for ordinary
+development work (git, gh, tests, package managers, text processing) – remove whatever your organisation does not use.
+What the hook does **not** guarantee:
+
+- **Interpreters run arbitrary code.** `python3`, `node`, `bash script.sh` and scripts from the repo or a temp directory
+  are on the list, so code the agent writes and runs itself can do anything the system allows. The hook only spots
+  obvious patterns in it (network, spawning commands) – a heuristic that can be bypassed.
+- **Network reads are not blocked.** `curl` without a write and `WebFetch` go through, so data can leave in a query
+  string. HTTP writes (POST/PUT/PATCH/DELETE) to non-local addresses are an action from `uprawnienia.yaml`.
+- **The agent's role is declared**, not authenticated (`AGENT_ROLA`, `.agent-rola`). The hook protects an honest agent
+  from mistakes and from commands injected through content, not from a malicious process on the same machine.
+- **It does not replace system and service permissions.** The real boundary is an account without production access,
+  narrowly scoped tokens, branch protection and a separate machine or container for the fleet.
+
+Every denial goes to `bezpieczenstwo/blokady.jsonl` and every decision to the audit log – reviewing the denials shows
+what is missing from the list before anyone starts working around it.
 
 ## Quick start
 ```bash

@@ -14,8 +14,9 @@ Who is who: the **owner** sets the mandate, the budget and the limits. The **CEO
    outside the repo: sending an e-mail or a message, publishing, a payment, a signature, opening an account, accepting terms,
    changing a service's settings, a merge, a deployment, changing scheduled tasks. The level of each action (sam / CEO /
    owner / nigdy (never)) is in `uprawnienia.yaml`. Anything not listed there is at the **owner** level.
-   The table is enforced technically by the hook `.claude/hooks/uprawnienia.py` (it blocks a command before it runs) – but
-   the hook only knows command patterns; the rule also applies where the hook does not recognise something. The hook learns
+   The table is enforced technically by the hook `.claude/hooks/uprawnienia.py` (it blocks a command before it runs) on a
+   default-deny basis: a command, tool or MCP server outside `dozwolone-polecenia.txt` needs the owner's decision. The hook
+   does not see what code run by an interpreter does – the rule also applies where the hook does not recognise something. The hook learns
    your role from the file `.agent-rola` (written by `scripts/przebieg.sh`; in an agent chat: `echo <rola> > .agent-rola`).
    You pass the owner's consent for one action to the command as `DECYZJA=D-RRRRMMDD-NN <polecenie>` – the ID must exist in `decyzje.md`.
 2. **Consent has an ID and covers one named action.** The owner's consent is an entry `D-RRRRMMDD-NN` in `decyzje.md`
@@ -48,7 +49,8 @@ Who is who: the **owner** sets the mandate, the budget and the limits. The **CEO
 - **Modes:** PEŁNY (full, once a week), DZIENNY (daily), ZDARZENIE (event: new order, decision, deadline ≤ 3 h), CISZA
   (silent: one sentence, no commit).
 - **Orders:** a question or task for another area goes into its inbox (`zlecenia/README.md`). You do not
-  solve it yourself. Every order has `Termin:` (deadline, 12 h by default) and a verifiable `Zrobione gdy:` (done when).
+  solve it yourself. Every order has `Termin:` (deadline, 12 h by default) and a verifiable `Zrobione gdy:` (done when). At-risk
+  orders (deadline ≤ 2 h) go before other work; a deadline is never moved after it has passed (`zlecenia/README.md` – "No missed deadlines").
 - **Claiming work:** before starting, an entry `[w toku – <sesja>, GG:MM]`, commit and push. After `git pull` you check
   that nobody got there first. Before `gh pr create` – `gh pr list --state all --search "<ID>"`.
 - **Source of truth:** you check state at the source (query, API, `gh`), not in a PR description, a log or another

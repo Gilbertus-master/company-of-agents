@@ -2,6 +2,7 @@
 # "(start)" = first proposal: adjusted after 2 weeks of measurement (control H-03); every change → a row in ceo/wiedza/zmiany-instrukcji.md.
 # Format: flat `klucz: liczba` (the script reads it without PyYAML). A threshold that is not here must not be written into a control's text.
 limit_kontroli: 90                # above this: first remove a control with no failure for 4 weeks that does not guard a legal requirement (§)
+zagrozone_h: 2                    # A-13 – an order whose deadline falls within this many hours is "at risk" and goes before other work
 decyzja_wlasciciela_h: 48         # A-03, KPI K12 – a matter with the owner older than this many hours needs a "5 owner minutes" package
 decyzje_wlasciciela_max: 5        # A-03 (start) – how many matters older than the threshold may wait at once
 operator_sla_h: 24                # A-11 – when org.yaml → ludzie.operator.sla_godziny is not set

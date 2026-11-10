@@ -1,0 +1,350 @@
+# Allowlist of commands and tools – the permissions hook blocks BY DEFAULT everything that is not listed here.
+#
+# How it works (.claude/hooks/uprawnienia.py):
+#   - a Bash command is split into parts (;  &&  ||  |  $(…)  `…`  subshells, bash -c '…', find -exec, xargs)
+#     and EVERY part must start with an entry from the [polecenia] (commands) section;
+#   - an entry is a command name or a name with a subcommand ("gh pr view" admits gh pr view, but not gh pr merge);
+#   - actions from uprawnienia.yaml (merging a PR, deployment, sending, writing over HTTP…) have their own levels
+#     and go their own way – an entry here does not unlock them;
+#   - the absolute bans from zasady.md (git reset --hard, sudo, eval…) apply regardless of this list;
+#   - a command not on the list = action "spoza_listy" (level: owner) – it passes only with an accepted decision
+#     (DECYZJA=D-RRRRMMDD-NN <command>) or after being added here.
+#
+# Changing this list is "zmiana_zasad_lub_uprawnien": owner only, through a PR. An agent never adds commands for itself.
+# This is a guard rail, not a sandbox: an interpreter on the list (python3, node, bash script.sh) will run any code
+# it is given. The shorter the list, the stronger the guard rail – remove what your organisation does not use.
+
+[polecenia]
+# --- shell builtins (no effect outside the process) ---
+echo
+printf
+cd
+pwd
+pushd
+popd
+export
+local
+declare
+typeset
+readonly
+set
+unset
+shopt
+setopt
+read
+mapfile
+test
+[
+true
+false
+:
+exit
+return
+break
+continue
+wait
+shift
+let
+type
+which
+hash
+alias
+umask
+ulimit
+getopts
+source
+.
+trap
+kill
+pkill
+killall
+jobs
+disown
+fg
+bg
+sleep
+
+# --- reading and processing text ---
+cat
+head
+tail
+less
+grep
+egrep
+fgrep
+rg
+sed
+awk
+cut
+tr
+sort
+uniq
+wc
+nl
+tac
+rev
+paste
+join
+comm
+column
+fold
+expand
+diff
+cmp
+patch
+jq
+yq
+xxd
+od
+hexdump
+strings
+base64
+shasum
+sha256sum
+md5
+md5sum
+cksum
+iconv
+envsubst
+xmllint
+plutil
+pdftotext
+pdftoppm
+textutil
+cloc
+seq
+expr
+bc
+tee
+xargs
+
+# --- files and directories ---
+ls
+tree
+find
+fd
+stat
+file
+du
+df
+realpath
+readlink
+basename
+dirname
+mkdir
+mktemp
+touch
+cp
+mv
+rm
+rmdir
+ln
+chmod
+tar
+zip
+unzip
+gzip
+gunzip
+zcat
+open
+pbcopy
+pbpaste
+mdfind
+mdls
+
+# --- system (read-only) ---
+date
+cal
+uname
+hostname
+whoami
+id
+env
+printenv
+ps
+pgrep
+lsof
+uptime
+sw_vers
+nproc
+sysctl
+locale
+tput
+clear
+man
+
+# --- git (the bans from zasady.md still apply: reset --hard, stash, clean, push --force, add -A, branch -D) ---
+git
+
+# --- GitHub CLI: reading and ordinary work on PRs ---
+# gh pr merge / gh pr create / gh release create / gh secret set / gh repo edit are actions from uprawnienia.yaml.
+# gh api: reads (GET) pass; every write (-X POST/PUT/PATCH/DELETE, -f/-F, a GraphQL mutation) is zmiana_ustawien_uslugi.
+gh pr view
+gh pr list
+gh pr diff
+gh pr checks
+gh pr status
+gh pr comment
+gh pr edit
+gh pr ready
+gh pr review
+gh pr close
+gh pr reopen
+gh pr checkout
+gh pr update-branch
+gh issue
+gh run
+gh workflow view
+gh workflow list
+gh api
+gh repo view
+gh repo list
+gh repo clone
+gh auth status
+gh search
+gh label
+gh release view
+gh release list
+gh release download
+gh secret list
+gh variable list
+gh status
+gh browse
+gh --version
+gh version
+
+# --- network ---
+# curl: a download (GET) passes; a write (-d, -F, -T, -X POST/PUT/PATCH/DELETE) to a non-local address
+# is zmiana_ustawien_uslugi. `curl … | sh` is always blocked (a shell executing its input).
+curl
+dig
+nslookup
+host
+ping
+nc
+whois
+openssl
+
+# --- interpreters (they run any code – see the note at the top) ---
+python3
+python
+node
+bash
+sh
+zsh
+perl
+
+# --- developer tools: REMOVE the ones you do not use ---
+npm
+npx
+pnpm
+yarn
+bun
+deno
+pip
+pip3
+uv
+make
+tsc
+eslint
+prettier
+pytest
+ruff
+black
+mypy
+shellcheck
+sqlite3
+supabase status
+supabase start
+supabase stop
+supabase db diff
+supabase db lint
+supabase db reset
+supabase migration list
+supabase migration new
+supabase gen
+supabase --version
+supabase projects list
+supabase migration repair
+supabase functions list
+supabase secrets list
+supabase backups list
+docker ps
+docker info
+docker version
+docker logs
+docker images
+docker compose ps
+docker compose logs
+
+# --- images and preview (screenshots, store graphics) ---
+sips
+cwebp
+dwebp
+webpinfo
+magick
+qlmanage
+
+# --- secrets: read from the keychain inside a command (toolbelt/sekrety.md); the value must never reach a file or a log ---
+security find-generic-password
+# gh auth token
+
+# --- platform tools: uncomment if you build native apps or manage the machine ---
+# swift
+# swiftc
+# xcodebuild
+# xcrun
+# brew
+# launchctl
+# docker exec
+# docker run
+# claude
+
+# --- remote access: OFF by default (ssh/scp to a production host is wdrozenie_produkcja) ---
+# ssh
+# scp
+# rsync
+
+[sciezki]
+# Programs run by path. Scripts from the repo (a relative path or one inside the repo) pass without an entry.
+# Shell-style patterns (*, ?; the asterisk also covers subdirectories).
+# Temporary directories: the agent writes helper scripts there and runs them – this gives it no more than a script in the repo.
+/tmp/*
+/private/tmp/*
+/var/folders/*
+# Scripts of installed skills and plugins:
+~/.claude/skills/*
+~/.claude/plugins/*
+# Examples to uncomment:
+# ~/.local/bin/*
+# /opt/homebrew/opt/*/bin/*
+
+[narzedzia]
+# Agent tools other than Bash and MCP. Read tools (Read, Glob, Grep, WebFetch, WebSearch…) are always allowed.
+# Writing to control files (zasady.md, uprawnienia.yaml, this list, .claude/hooks/, the audit log) requires an owner decision
+# regardless of this entry.
+Write Edit MultiEdit NotebookEdit
+TodoWrite Task Agent BashOutput KillShell
+TaskCreate TaskUpdate TaskStop TaskOutput
+Skill SlashCommand ExitPlanMode EnterPlanMode AskUserQuestion
+SendMessage ListAgents ScheduleWakeup Monitor ReadNotifications
+Artifact SendUserFile Workflow EnterWorktree ExitWorktree
+PushNotification StructuredOutput ListMcpResourcesTool ReadMcpResourceTool
+
+[mcp]
+# MCP tools: a pattern is matched against the tool name (the part after mcp__<server>__) or the full name.
+# Sending, deleting, migrations and deployments have their own levels in uprawnienia.yaml – a pattern does not unlock them.
+# Read:
+list*
+get*
+search*
+read*
+query*
+find*
+fetch*
+describe*
+view*
+# Controlling the session itself and its view (remove if unused):
+mcp__ccd_turn__*
+mcp__visualize__*
+mcp__Claude_Browser__*
