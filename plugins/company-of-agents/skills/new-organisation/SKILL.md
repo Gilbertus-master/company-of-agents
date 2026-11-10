@@ -11,19 +11,25 @@ Template: `Gilbertus-master/company-of-agents` (full guide after cloning: `docs/
 domain, a short prefix (2–4 letters), GitHub owner, the operator's address and the runtime (`claude-routines`,
 `desktop-scheduled` or `agent-sdk`).
 
+Ask separately about **sharing improvements** – this is the company owner's decision, not yours. First show them what it
+means (README, "Sharing improvements": proposals are Issues in the public template repository, Apache-2.0 licence, content
+already sent cannot be withdrawn), then ask plainly "yes or no". Do not guess, do not suggest an answer and do not choose for
+them; without their unambiguous answer do not run `init-org.sh`.
+
 1. Show the user the commands from step 2 with the values filled in and wait for consent – you are creating a repository on their account.
 2. Company repo (always **private**):
    ```bash
    gh repo create <owner>/<company>-agents --private --template Gilbertus-master/company-of-agents --clone
    cd <company>-agents
    scripts/init-org.sh --nazwa "<Name>" --domena <domain> --prefiks <prefix> \
-     --github <owner>/<company>-agents --operator <operator address> --runtime <runtime>
+     --github <owner>/<company>-agents --operator <operator address> --runtime <runtime> \
+     --dziel-sie <tak|nie – the owner's answer: tak = yes, nie = no>
    python3 flota/generuj.py
    bash scripts/testy.sh
    ```
 3. The tests must be green. Red → show the output and stop; do not change tests to make them pass.
-4. Read the README section "Sharing improvements" with the user – it is **off by default**. Do not switch it on yourself:
-   the owner enables it by a decision (`repo.dziel_sie_ulepszeniami: true` and `repo.dziel_sie_decyzja: "D-…"` in `org.yaml`).
+4. Show the user what was recorded about sharing improvements: the line in the start-up decision `decyzje/D-…-01.md` and
+   `repo.dziel_sie_ulepszeniami` and `repo.dziel_sie_decyzja` in `org.yaml`. A later change is made by the owner with a new decision – not by you.
 5. Billing and the fleet account: `org.yaml → runtime` as described in `docs/instrukcja-uruchomienia.md` (section 2). The
    fleet runs on **one** account; never suggest switching between other people's accounts or subscriptions.
 6. Commit and push only after the user agrees. You do not enter secrets (`STRAZNIK_TOKEN`) – you give the command

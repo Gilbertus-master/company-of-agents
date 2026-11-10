@@ -44,7 +44,8 @@ model, company policies and the business processes – see `docs/poza-rdzeniem.m
 gh repo create <you>/<company>-agents --private --template Gilbertus-master/company-of-agents --clone
 cd <company>-agents
 scripts/init-org.sh --nazwa "New Company" --domena newcompany.example --prefiks nc \
-  --github <you>/<company>-agents --operator operator@newcompany.example --runtime claude-routines
+  --github <you>/<company>-agents --operator operator@newcompany.example --runtime claude-routines \
+  --dziel-sie nie          # mandatory, explicit choice: tak (yes) or nie (no) – see "Sharing improvements"
 python3 flota/generuj.py
 bash scripts/testy.sh
 ```
@@ -60,13 +61,15 @@ The core skills also ship as a plugin (`plugins/`, described in `plugins/<name>/
 where `<name>` is the name of this repository. The `new-organisation` skill creates the company repo and walks you through the first start-up.
 The plugin ships no hooks or permissions – the fleet's safeguards work inside the company repo.
 
-## Sharing improvements – OFF by default
+## Sharing improvements – the owner's explicit choice
 This project can learn from the fleets that use it – but only when the company's owner deliberately enables it.
-Until you do, nothing leaves your repository.
+`scripts/init-org.sh` has no default here: it requires `--dziel-sie tak` (yes) or `--dziel-sie nie` (no) – in a terminal it asks –
+and records the choice in `org.yaml` and in the start-up decision. With "nie" – and in a repository where `init-org.sh` has
+not been run yet – nothing leaves your repository.
 
 | | |
 |---|---|
-| **Turning it on** | An owner decision recorded in `decyzje/`, then in `org.yaml`: `repo.dziel_sie_ulepszeniami: true` and `repo.dziel_sie_decyzja: "D-…"` (the id of that decision). Without a decision id the script sends nothing to this repository. |
+| **Turning it on** | When setting the company up: `scripts/init-org.sh … --dziel-sie tak` (the choice goes into the start-up decision `D-…-01` and into `org.yaml`). Later: an owner decision recorded in `decyzje/`, then in `org.yaml`: `repo.dziel_sie_ulepszeniami: true` and `repo.dziel_sie_decyzja: "D-…"` (the id of that decision). Without a decision id the script sends nothing to this repository. |
 | **What may be sent** | Changes you made to *mechanism* files relative to the template version: `scripts/`, `.claude/skills/`, `.claude/hooks/`, `procesy/`, `role/`, `ewaluacje/`, `moduly/`, `flota/szablony/`, `flota/generuj.py`, `pm/narzedzia/`, `pm/specyfikacje/`, `recenzent/skrypty/`, `toolbelt/katalog.md`, `.github/workflows/` – and rules from agent playbooks that helped at least 3 times and never hurt (the rule text only). |
 | **What the mechanism does not collect** | Files outside that list: `org.yaml`, policies, decisions, orders, run logs, customer or financial data. If such content ends up inside a listed file (a script or a role description, for example), it will be collected – which is why there is a gate and a preview. |
 | **Gate** | Before sending, `scripts/propozycje.py sprawdz` rejects a proposal in which it finds your company name, domain, GitHub owner, contact address, e-mail addresses, phone numbers, Polish personal (PESEL), tax or bank numbers, or secrets. The gate is pattern-based and cannot recognise every form of confidential text. |

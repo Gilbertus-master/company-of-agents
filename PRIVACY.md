@@ -3,8 +3,8 @@
 This covers Issues, pull requests and comments in this repository, including proposals sent automatically by fleets whose
 owner has enabled sharing of improvements (README, "Sharing improvements").
 
-- **Controller.** The publisher of this repository – the owner of the GitHub account it is published under
-  (https://github.com/Gilbertus-master/company-of-agents). Contact: an Issue in this repository or, for confidential matters, the channel described
+- **Controller.** Sebastian Jablonski, a natural person – the publisher of this repository
+  (https://github.com/Gilbertus-master/company-of-agents). Contact: jablonski.sl@gmail.com, an Issue in this repository or, for confidential matters, the channel described
   in `SECURITY.md`.
 - **What data and why.** We process data contained in proposals, including the GitHub login and the content, to evaluate
   and implement improvements to the template (Art. 6(1)(f) GDPR – legitimate interest: developing the project).

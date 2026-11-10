@@ -101,7 +101,7 @@ scripts, tests, the permissions hook and the watchdog match these strings exactl
 | Command | Meaning |
 |---|---|
 | `bash scripts/testy.sh [words]` · `--lista` | run the test groups (optionally those whose name contains a word) · list them |
-| `scripts/init-org.sh --nazwa --domena --prefiks --github --operator --wlasciciel --strefa --runtime --bez-etykiet --tak` | initialise a company: name, domain, prefix, repo, operator, owner, time zone, runtime, skip labels, no questions |
+| `scripts/init-org.sh --nazwa --domena --prefiks --github --operator --wlasciciel --strefa --runtime --dziel-sie tak\|nie --bez-etykiet --tak` | initialise a company: name, domain, prefix, repo, operator, owner, time zone, runtime, share improvements with the template yes\|no (mandatory, the owner's choice), skip labels, no questions |
 | `python3 flota/generuj.py` · `--sprawdz` · `--konto` · `--wyjscie` · `--tylko` · `--lista` · `--routines` | generate prompts and budgets · check they match the manifest · account · output directory · only these agents · list task calls · cloud routine files |
 | `scripts/nowy-agent.sh` | add a new agent (role, registers, manifest entry) |
 | `scripts/przebieg.sh` · `przebieg-headless.sh` | run wrapper (lock, windows, mode) · headless run through the Agent SDK |

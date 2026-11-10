@@ -35,13 +35,14 @@ Once the seat's weekly limit is used up, the fleet keeps working only on paid ov
 gh repo create <OWNER>/<firma>-agenci --private --template Gilbertus-master/company-of-agents --clone
 cd <firma>-agenci
 scripts/init-org.sh --nazwa "Nowa Firma" --domena nowafirma.example --prefiks nf \
-  --github <OWNER>/<firma>-agenci --operator operator@nowafirma.example --runtime claude-routines   # or desktop-scheduled / agent-sdk
+  --github <OWNER>/<firma>-agenci --operator operator@nowafirma.example --runtime claude-routines \
+  --dziel-sie nie                 # or desktop-scheduled / agent-sdk; --dziel-sie tak|nie: the owner's mandatory choice
 # org.yaml → runtime: rozliczenie, konto, cena_planu_usd_miesiac, nadwyzka_usd_miesiac; repo: szablon, skrzynka_propozycji
 python3 flota/generuj.py        # agent prompts and budgets (flota/budzety.tsv)
 git add -A && git commit -m "start organizacji Nowa Firma" && git push
 gh secret set STRAZNIK_TOKEN    # fine-grained token: read PRs of the product repo, write to the organisation repo
 ```
-Output of `init-org.sh`: `org.yaml`, the starting decision `D-<today>-01`, core agents (ceo, pm, recenzent), Issue labels, prompts,
+Output of `init-org.sh`: `org.yaml`, the starting decision `D-<today>-01` (with the recorded choice about sharing improvements), core agents (ceo, pm, recenzent), Issue labels, prompts,
 tests ✓ and a list of tasks to create. The watchdog starts by itself in GitHub Actions every 15 min.
 
 ## 4. The fleet on the fleet account
@@ -80,7 +81,7 @@ Commit, push. Finally write briefly to the operator: what works, what is in prog
   on a separate branch, prompts, tests, PR → reviewer → merge queue. Changes to `zasady.md` and `.claude/` wait for an owner decision.
 - **Every Monday the architect** submits improvements: `python3 -I scripts/propozycje.py zbierz` → `sprawdz` → `wyslij` – only changes
   to mechanisms and proven rules, through the anonymisation gate, to a private inbox (`repo.skrzynka_propozycji`) or – in the free core – to the public template repository,
-  with consent `repo.dziel_sie_ulepszeniami: true` (off by default; sending to the shared repository also requires the owner's decision in `repo.dziel_sie_decyzja`).
+  with consent `repo.dziel_sie_ulepszeniami: true` (the owner chooses in `init-org.sh --dziel-sie tak|nie`; sending to the shared repository also requires the owner's decision in `repo.dziel_sie_decyzja`).
 
 ## 8. Day to day and when something does not work
 | Situation | What to do |

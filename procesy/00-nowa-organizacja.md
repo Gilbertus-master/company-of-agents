@@ -12,8 +12,9 @@ incidents. Here they are in place from day one.
 1. **[właściciel]** A one-page business thesis: what, for whom, revenue model, what we do not do.
 2. Copy the template: `gh repo create OWNER/<firma>-agenci --private --template Gilbertus-master/company-of-agents`
    and clone it to `~/projekty/<firma>-agenci`.
-3. **One command:** `scripts/init-org.sh --nazwa "…" --domena … --prefiks … --github OWNER/<firma>-agenci --operator …`
-   – fills in `org.yaml`, records the start-up decision `D-…-01`, creates the core agents (ceo, pm, recenzent), creates
+3. **One command:** `scripts/init-org.sh --nazwa "…" --domena … --prefiks … --github OWNER/<firma>-agenci --operator … --dziel-sie tak|nie`
+   – fills in `org.yaml`, records the start-up decision `D-…-01` (together with the owner's mandatory choice whether the fleet
+   shares improvements with the template – without `--dziel-sie` the script writes nothing), creates the core agents (ceo, pm, recenzent), creates
    the Issues labels, generates prompts, runs the tests and prints the list of tasks to create and the steps for the operator.
    Add the mandate, budget and approval threshold to `org.yaml` by hand.
 4. Review `uprawnienia.yaml` – keep it cautious at the start.

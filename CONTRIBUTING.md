@@ -3,7 +3,7 @@
 Thank you for improving the core. Two ways to contribute:
 
 1. **Automatically, from a running fleet** – if the company's owner has enabled sharing (see "Sharing improvements" in the
-   README; off by default). Then every Monday the architect agent runs `scripts/propozycje.py` and files an Issue here with
+   README; the owner chooses in `scripts/init-org.sh --dziel-sie tak|nie`). Then every Monday the architect agent runs `scripts/propozycje.py` and files an Issue here with
    mechanism changes and proven rules. The proposal is a Contribution within the meaning of section 5 of the Apache-2.0
    licence and carries a statement of the owner's consent and of compliance with the Developer Certificate of Origin 1.1.
 2. **By hand.** Open an Issue (template "Improvement proposal") or a pull request.
