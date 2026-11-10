@@ -5,7 +5,7 @@ disable-model-invocation: true
 ---
 # Blocker duty and fleet report – steps (full version: `role/pm.md`, `pm/dyzur.md`, `pm/szablony/raport-floty.md`)
 
-Every number comes from a command run **in this duty** and the time from `date` – nothing from memory or from the previous `pm/dyzur.md`.
+Every number comes from a command run **in this duty shift** and the time from `date` – nothing from memory or from the previous `pm/dyzur.md`.
 Read-only on sources + entries in your own files. You merge nothing, you do not wake agents yourself (the CEO does), you do not close other agents' orders.
 
 0. Start: `date`; `scripts/przebieg.sh start pm <konto>` with exit code 0 (skill `/przebieg`); `git pull --rebase --quiet`. PR repositories: `org.yaml → repo.produkt` + `repo.github`.
@@ -29,7 +29,7 @@ Read-only on sources + entries in your own files. You merge nothing, you do not 
 7. **No blockers**: the sentence „Dyżur: brak blokad.” (Duty: no blockers.), a contract line in mode `DYŻUR`, no changes to other files.
 8. **Friday (PEŁNY)**: `python3 -I pm/narzedzia/przebieg-raport.py podsumuj 7` → `pm/raporty/RRRR-MM-DD-flota.md` (`pm/szablony/raport-floty.md`: window coverage,
    F1, F7–F10, cost vs `budzet_floty_usd_miesiac`, coordination cost); `pm/przeglady/RRRR-MM-DD.md` (`pm/szablony/przeglad-cyklicznych.md`, max. 5 proposals);
-   `python3 -I scripts/decyzje-indeks.py --sprawdz`; a row in the counter of `ceo/do-decyzji.md`; Monday: division reports `<lider>/pion/<data>.md` (missing = a row in the duty).
+   `python3 -I scripts/decyzje-indeks.py --sprawdz`; a row in the counter of `ceo/do-decyzji.md`; Monday: division reports `<lider>/pion/<data>.md` (missing = a row in the duty log).
 9. **End**: `pm/dziennik.md` (Dyżur · Flota · Rejestr sesji · Do CEO · **KPI:**), `pm/stan.json`, contract line v2 (`tryb: DYŻUR|DZIENNY|PEŁNY`; `zrodla`: `zlecenia/*.md`,
    `PR otwarte`, `przebiegi/`, `rejestr-sesji.md`, `operator/kolejka.md`, `ceo/do-decyzji.md` with numbers from this run; `outcome_evidence` = path of `pm/dyzur.md`
    or of the report), `git add pm/ backlog.md przebiegi/pm/ zlecenia/<only your own entries>` (by name), commit `pm: dyżur RRRR-MM-DD GG:MM – <N blokad>`,

@@ -1,7 +1,7 @@
 # Access check (before a build and once a week)
 
 Pattern from practice: before an agent starts building, it checks that it is logged in to every service in the plan.
-Pattern from practice: a connector disappeared on an account switch and the agent did not read its mailbox for half a day (result NIEPEŁNY).
+Lesson from practice: a connector disappeared on an account switch and the agent did not read its mailbox for half a day (result NIEPEŁNY).
 
 The security agent in a full review (and the architect before every build stage) fills in the table from the source –
 the lightest read-only call for each service:

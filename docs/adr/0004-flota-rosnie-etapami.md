@@ -24,5 +24,5 @@ subsequent appointment (`procesy/60-cykl-zycia-agenta.md`).
 
 ## Source
 `docs/raport/2026-11-09-raport.md` ch. 0 ("Reliability was added after incidents"), 1.4, 4.2 items 2–3 (reliability from day 1, the fleet
-grows in stages), ch. 5 (rollout plan); research "Standards 2026" – MAST (arXiv 2503.13657), "What to leave unchanged" (fleet growing in
+grows in stages), ch. 5 (rollout plan); research "Standardy 2026" – MAST (arXiv 2503.13657), "Co zostawić bez zmian" (fleet growing in
 stages with a 3-day gate).

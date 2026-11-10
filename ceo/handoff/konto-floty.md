@@ -1,7 +1,7 @@
 # Fleet account, billing and the rate regulator
 
 **Rule (since 10.11.2026):** the whole fleet works on **one account** – no account rotation and no switching the fleet to another
-person's account that has spare limit. Reason (our reading as of 10 November 2026 – not legal advice; check the current wording of the terms): consumer plans
+person's account that has limit to spare. Reason (our reading as of 10 November 2026 – not legal advice; check the current wording of the terms): consumer plans
 (Free, Pro, Max, Ultra) are subject to the Consumer Terms – no account sharing and non-commercial use only (the version for
 consumers in the EEA, §11; in other regions check your version); on the Team plan "Each seat is for one named individual", and limits "can't be transferred or shared
 between team members"; the Usage Policy prohibits, among other things, creating multiple accounts to avoid detection or to circumvent product guardrails
@@ -21,7 +21,7 @@ The owner has their own seat and their own usage (chat, decisions). Fleet tasks 
 ## Rate regulator – task `<prefiks>-limit-<konto>` (every 30 min, the first task on the fleet account)
 - Measurement `get_usage` → `python3 scripts/regulator.py --konto <K> --procent N --reset <ISO> [--procent5h N --reset5h <ISO>]`.
 - `cel_teraz` (target now) = 100 % × hours since the start of the window / `okno_celu_h` (default 168 h – evenly across the whole week);
-  `odchylenie` (deviation) = percent − target.
+  `odchylenie` (deviation) = per cent used − target.
 - Modes (file `~/.<prefiks>-limit-<K>.json`, read by `scripts/przebieg.sh`):
 
   | mode | condition | effect |

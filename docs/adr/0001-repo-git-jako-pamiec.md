@@ -1,10 +1,10 @@
-# ADR 0001 · A git repository as the organisation's memory and message bus · status: accepted · 2026-11-09
+# ADR 0001 · A git repository as the organisation's memory and message bus · status: przyjęty (accepted) · 2026-11-09
 
 ## Context
 Every agent run starts without memory – state has to live outside the model. Options considered: vector memory (Mem0, Zep), a
 "company" platform on top of Claude Code (Paperclip), a custom database, files in a git repository with GitHub Issues as orders. The source
 organisation ran the whole organisation in files for 4 days and about 1,400 commits (logs, `stan.json`, orders, decisions, registers) – it worked; the pain points
-were the size of order files (100 KB+), conflicts on shared writes and lack of memory hygiene. Vector memory benchmarks are self-reported and contradictory;
+were the size of order files (100 KB+), conflicts on shared writes and a lack of memory hygiene. Vector memory benchmarks are self-reported and contradictory;
 Paperclip has no documented working company, and memory and learning are only on its roadmap.
 
 ## Decision

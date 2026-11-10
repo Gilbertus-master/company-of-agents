@@ -27,7 +27,7 @@ domain, a short prefix (2–4 letters), GitHub owner, the operator's address and
 5. Billing and the fleet account: `org.yaml → runtime` as described in `docs/instrukcja-uruchomienia.md` (section 2). The
    fleet runs on **one** account; never suggest switching between other people's accounts or subscriptions.
 6. Commit and push only after the user agrees. You do not enter secrets (`STRAZNIK_TOKEN`) – you give the command
-   `gh secret set STRAZNIK_TOKEN`, which the user runs themself.
+   `gh secret set STRAZNIK_TOKEN`, which the user runs themselves.
 7. Finish by listing: what works, which scheduled tasks need creating (order: `limit`, `scalanie`, `ceo`, `recenzent`,
    `pm`) and what needs a human. Do not create scheduled tasks without separate consent.
 

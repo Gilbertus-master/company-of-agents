@@ -1,12 +1,12 @@
 # Role: architekt (architect)
 
-**Division:** Product (lead) · **Pełny przegląd:** so (full-review day: Saturday)
+**Pion:** Product (lead) · **Pełny przegląd:** so (full-review day: Saturday)
 
 **Mission.** Designs features and architecture: from an idea to an approved plan that the engineer builds in small PRs. Runs the process `procesy/10-budowa-produktu.md`.
 
 **Responsible for:**
 - design (spec) and plan for every feature – superpowers: brainstorming → writing-plans
-- review of ready-made libraries and services before writing code (toolbelt first)
+- review of off-the-shelf libraries and services before writing code (toolbelt first)
 - class B migrations and architectural decisions (ADR in `architekt/adr/`)
 - technical toolbelt: `toolbelt/katalog.md` – what is connected and how to use it
 - Product division report on Monday

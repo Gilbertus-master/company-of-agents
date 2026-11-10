@@ -1,10 +1,10 @@
 # Toolbelt – catalogue of external plugins
 
-Rule: **we do not write what can be plugged in.** Every area of the company is served by a ready service driven by an agent
+Rule: **we do not write what can be plugged in.** Every area of the company is served by an off-the-shelf service driven by an agent
 (MCP, CLI or API). We write our own code only where there is no service or where it is a competitive advantage.
 
-An idea from other teams' practice: the agent has a toolbelt prepared in advance – services in
-which it is already logged in, with a usage description and ready code snippets – and sets up a project in them itself instead
+An idea from other teams' practice: the agent has a toolbelt prepared in advance – services
+it is already logged in to, with a usage description and ready code snippets – and sets up a project in them itself instead
 of writing an integration from scratch.
 
 Status legend: **MCP-ofic.** – the provider's official MCP server · **MCP-społ.** – community server · **CLI** ·
@@ -63,8 +63,8 @@ to check before choosing. Column "Who" – the agent that has access (least-priv
 | Area | Default choice | Alternatives | Status | Who | Notes |
 |---|---|---|---|---|---|
 | Payments | Stripe (MCP-ofic., Agent Toolkit) | – | verified: read | finance (read), CEO (refunds per policy) | **from 12.2026 the MCP accepts only keys tagged "Agent" – migrate by 30.11.2026** |
-| PL invoices + KSeF | Fakturownia (REST; MCP-ofic. read only) | inFakt (REST, KSeF), wFirma (API ?) | verified: Fakturownia | accounting | the program handles KSeF; an invoice cannot be cancelled |
-| KSeF directly | – | MCP-społ.: flippico/ksef-mcp, mcp-ksef-pl | research | accounting | only when the invoicing program is not enough |
+| PL invoices + KSeF | Fakturownia (REST; MCP-ofic. read only) | inFakt (REST, KSeF), wFirma (API ?) | verified: Fakturownia | accounting | the software handles KSeF; an invoice cannot be cancelled |
+| KSeF directly | – | MCP-społ.: flippico/ksef-mcp, mcp-ksef-pl | research | accounting | only when the invoicing software is not enough |
 | Bank | PSD2 aggregator (read) | Revolut Business API | research | finance, accounting (read) | transfers are made by the operator |
 | Exchange rates | NBP API | – | verified | accounting | |
 | Document signing | Docusign (MCP-ofic.) | Autenti (API ?) | research | legal (preparation) | a qualified signature is applied by the operator |

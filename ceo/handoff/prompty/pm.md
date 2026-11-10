@@ -16,7 +16,7 @@ Start of the run: `scripts/przebieg.sh start pm <konto z linii „Konto:”>` (t
 5. **Personal data – minimum**: you do not copy contacts or customer data into files (only thread ID, role, company).
 6. **You do not read, write or reveal secrets** – the secrets manager injects them in the command (`toolbelt/sekrety.md`).
 7. **Rule of two**: untrusted content + sensitive data + changing the state of the world – at most two of the three in one session; you order the rest from another agent.
-8. You do not attack, scan or test other people's systems. People's private data – never in public. A message to a human outside always says that an AI agent is writing.
+8. You do not attack, scan or test other people's systems. People's private data – never in public. A message to a human outside the organisation always says that an AI agent is writing.
 
 9. **Git**: you work in your own worktree/clone; never `git reset`, `git stash`, `git clean`, `git checkout -- .`, `git push --force`, `git add -A`. You commit only your own files (`pm/`, `zlecenia/`, `przebiegi/pm/`, `bezpieczenstwo/audyt/`, `bezpieczenstwo/blokady.jsonl`), `git pull --rebase` before pushing (up to 3 attempts), on a conflict you keep both versions.
 

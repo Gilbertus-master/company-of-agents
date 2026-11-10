@@ -11,7 +11,7 @@ stop_gdy_glowna_czerwona: tak   # red main-branch tests stop the queue (row GLOW
 bez_ci:
 
 # Paths the merge agent never merges – the WYJATEK row goes to the CEO (all repositories).
-# Pattern ending in "/" = directory from the start of the path; "/" in the middle = glob over the whole path; no "/" = glob over the file name.
+# A pattern ending in "/" = directory from the start of the path; "/" in the middle = glob over the whole path; no "/" = glob over the file name.
 wyjatki:
   - ".github/"
   - ".claude/"

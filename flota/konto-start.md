@@ -30,7 +30,7 @@ cd <repo> && git pull --rebase --quiet
 python3 flota/generuj.py --sprawdz                                   # prompts = manifest
 python3 flota/generuj.py --konto B --wyjscie ~/<prefiks>-prompty-b    # prompts with "Konto: B" + list of calls
 ```
-- Each JSON line = one task (`taskId` `<prefiks>-<agent>-<konto>`, cron, description, prompt from a file). **Order from the list**
+- Each JSON line = one task (`taskId` `<prefiks>-<agent>-<konto>`, cron, description, prompt from a file). **Create them in list order**
   (first `<prefiks>-limit-<konto>` – the pace regulator).
 - After creating: "Run now" for the reviewer, customer service and the PM; check the mode of each task.
 - When moving the fleet, the old account **disables** its tasks (does not delete them); the fleet account goes in `org.yaml → runtime.konto`.

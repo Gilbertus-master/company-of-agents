@@ -9,9 +9,9 @@ The agentic-organisation skills, available in any folder without cloning the tem
 
 | Skill | Purpose |
 |---|---|
-| `/company-of-agents:new-organisation` | creates a private company repo from the template and walks through the first start |
+| `/company-of-agents:new-organisation` | creates a private company repo from the template and walks you through the first start-up |
 | `/company-of-agents:przebieg` | the agent run contract (start, modes, finish, report) |
-| `/company-of-agents:dyzur-pm` | the PM blocker watch and fleet report |
+| `/company-of-agents:dyzur-pm` | the PM blocker duty and fleet report |
 | `/company-of-agents:recenzja` | PR review step by step |
 | `/company-of-agents:incydent` | incident runbook (HALT, snapshot, report) |
 

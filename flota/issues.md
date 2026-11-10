@@ -18,7 +18,7 @@ Repo: private `OWNER/organizacja-agenci` (Issues are visible only to repo collab
    (`--reason completed`) or "Porzucone: <powód>" (`--reason "not planned"`). Archive = closed Issues, nothing is moved.
 4. **Parallel work for a week (CEO decision 9.11 – comparison, 0 lost):** every order for ceo, the reviewer or the architect – and every order
    these three send to each other – goes **to both places**: an Issue (template) **and** an entry in `zlecenia/<adresat>.md` with ` · issue #N` in the heading
-   (Issue first, then md with the number). Closing also in both: Issue closed + `[zrobione …]` in md with the same link. Other agents still write only to md –
+   (Issue first, then md with the number). Closing is also done in both places: Issue closed + `[zrobione …]` in md with the same link. Other agents still write only to md –
    the pilot addressee creates an Issue for such an entry at the start of a run and appends ` · issue #N`. An md entry without ` · issue #N` or an Issue without an md
    entry after the addressee's run = a discrepancy (pilot metric, counted by the PM: `grep '^## ' zlecenia/{ceo,recenzent,architekt}.md` vs `gh issue list --state all`).
 5. One shared `gh` user for the whole fleet – the assignment (`assignee`) says nothing; who is working is shown by the comment `[w toku – <sesja/zadanie>, GG:MM]`.

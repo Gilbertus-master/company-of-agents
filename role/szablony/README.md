@@ -4,7 +4,7 @@
 files; markers `{{rola}}` and `{{org.nazwa}}` are substituted). The agent starts work with ready registers instead of inventing a format
 in its first run – and the watchdog, the PM and the run contract (`przeczytane` / `w_rejestrze`) have fixed files for numeric reconciliation.
 
-Each register has a header: **purpose**, **columns**, the **„no personal data”** rule (thread / review / case ID instead of people) and **who
+Each register has a header: **purpose**, **columns**, the **"no personal data"** rule (thread / review / case ID instead of people) and **who
 updates it and when**. Format and content generalised from the source fleet's registers (November 2026).
 
 | Role | Files | What for |

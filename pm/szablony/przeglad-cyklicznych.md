@@ -1,7 +1,7 @@
 # Review of recurring tasks – Friday RRRR-MM-DD (PEŁNY PM, account X)
 
 Template: `pm/szablony/przeglad-cyklicznych.md`. File: `pm/przeglady/RRRR-MM-DD.md`. Written by the PM every Friday (`role/pm.md`, Weekly;
-`backlog.md` C-01). The review question: **does every recurring task give more than it costs – and who reads its output?**
+`backlog.md` C-01). The review question: **does every recurring task deliver more than it costs – and who reads its output?**
 Proposals go to the CEO (`zlecenia/ceo.md`); changes to scheduled tasks, crons and rhythm are made by the CEO per `uprawnienia.yaml`
 (`nowy_agent_lub_zadanie_cykliczne` – ceo), not by the PM. Every number from a command and with a time.
 
@@ -30,7 +30,7 @@ Legend: **CISZA** = contract lines `tryb: CISZA`; **With actions** = lines with 
 |---|---|---|---|---|---|---|
 | 1 | | | | | | |
 
-Examples: an agent with 7/7 CISZA → a rarer rhythm or "on event" mode (woken up by the CEO); two tasks with the same output → merge;
+Examples: an agent with 7/7 CISZA → a less frequent rhythm or "on event" mode (woken up by the CEO); two tasks with the same output → merge;
 a task with no recipient of its output → delete; an expensive task with simple actions → a weaker model; an agent with `BŁĄD` ≥ 3 → fix the
 instructions first, not the rhythm. Do not propose a change whose effect cannot be measured in the next review.
 

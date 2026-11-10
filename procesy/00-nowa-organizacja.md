@@ -4,7 +4,7 @@ Goal: about 2 weeks after the owner's decision the organisation runs with a CEO,
 agents. A human performs only the steps marked **[operator]** or **[właściciel]** (owner).
 
 Start-up rule: **the fleet grows in stages.** Every stage has a gate – the next one starts only when the previous one has had
-runs with result OK for 3 days (`przebiegi/`) and there are no open watchdog alerts. In the source organisation 21 agents
+OK runs for 3 days (`przebiegi/`) and there are no open watchdog alerts. In the source organisation 21 agents
 were created within a few days, and the reliability mechanisms (run contract, watchdog, claiming work) were added after
 incidents. Here they are in place from day one.
 
@@ -16,7 +16,7 @@ incidents. Here they are in place from day one.
    – fills in `org.yaml`, records the start-up decision `D-…-01`, creates the core agents (ceo, pm, recenzent), creates
    the Issues labels, generates prompts, runs the tests and prints the list of tasks to create and the steps for the operator.
    Add the mandate, budget and approval threshold to `org.yaml` by hand.
-4. Review `uprawnienia.yaml` – cautious at the start.
+4. Review `uprawnienia.yaml` – keep it cautious at the start.
 5. Fill in `polityki/` (price list, refunds, discounts, communication tone) – even as version 0.1.
 6. `git push` (private repo) and the Actions secrets `STRAZNIK_TOKEN` (+ optionally `STRAZNIK_RESEND_KEY`) – the fleet
    watchdog (`.github/workflows/straznik.yml`) starts on its own every 15 min, without a laptop.
@@ -33,7 +33,7 @@ The steps are prepared by the CEO agent (after stage 2 – until then Claude in 
 6. **[operator]** Claude account (a plan with Routines) and the MCP connectors from the toolbelt.
 
 ## Stage 2 – management core (days 3–7)
-1. The core agents exist since stage 0 (`init-org.sh`); fill in `ceo/kpi/kpi.md` (O1–O3) and `ceo/plan/` (year, quarter,
+1. The core agents have existed since stage 0 (`init-org.sh`); fill in `ceo/kpi/kpi.md` (O1–O3) and `ceo/plan/` (year, quarter,
    first week).
 2. Check in the Actions tab that the fleet watchdog has green runs (alerts: `zlecenia/ceo.md`, `ceo/straznik-zdarzenia.md`,
    mail to the operator when there is a Resend key).
@@ -47,7 +47,7 @@ The steps are prepared by the CEO agent (after stage 2 – until then Claude in 
    Run every task once manually so that it does not get stuck on a permission prompt.
 4. Cost telemetry (`toolbelt/obserwowalnosc.md`): **[operator]** enables OTel in `~/.claude/settings.json` of the run
    machine or in the cloud environment variables; without it the cost is visible only from the headless wrapper and the account limit.
-5. Gate: 3 days of CEO and PM runs with result OK; the CEO keeps `operator/kolejka.md` and `ceo/do-decyzji.md`.
+5. Gate: 3 days of CEO and PM runs with an OK result; the CEO keeps `operator/kolejka.md` and `ceo/do-decyzji.md`.
 
 ## Stage 3 – first line of revenue and risk (week 2)
 1. Choice according to the thesis: usually `marketing`, `sprzedaz` or `obsluga` + `recepcja`, and `prawny`, `compliance`, `ochrona-danych` (when there is personal data – from the start),
@@ -59,8 +59,8 @@ The steps are prepared by the CEO agent (after stage 2 – until then Claude in 
 
 ## Stage 4 – product and the full fleet (week 3+)
 1. `architekt`, `inzynier`, `tester` – process `procesy/10-budowa-produktu.md`; with apps in stores and many languages also `aplikacje` and `lokalizacja` (releases: `procesy/40-wydanie.md`).
-2. `bezpieczenstwo`, `podatkowy`, `wywiad`, `inwestorzy` – when there is something to guard. Every appointment according to `procesy/60-cykl-zycia-agenta.md` (3-day gate), monthly reviews according to `procesy/50-przeglad-agenta.md`.
-3. Divisions with leads and division reports (from 4 domain agents in a division).
+2. `bezpieczenstwo`, `podatkowy`, `wywiad`, `inwestorzy` – when there is something to guard. Every new agent according to `procesy/60-cykl-zycia-agenta.md` (3-day gate), monthly reviews according to `procesy/50-przeglad-agenta.md`.
+3. Divisions with leads and division reports (once a division has 4 domain agents).
 
 ## Ongoing
 - Every week the CEO: KPI "operator minutes", proposals to loosen `uprawnienia.yaml` and to remove the human from the loop.

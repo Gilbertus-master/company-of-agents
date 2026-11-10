@@ -1,6 +1,6 @@
 # Division report <Produkt | Wzrost | Ryzyko | Finanse> – <RRRR-MM-DD> (Mon)
 
-Template: `pm/szablony/raport-pionu.md` (maintained by the PM). Written by the division lead in the first run on Monday, before the CEO's
+Template: `pm/szablony/raport-pionu.md` (maintained by the PM). Written by the division lead in their first run on Monday, before the CEO's
 review (`role/ceo.md`, Full review). File: `<lider>/pion/RRRR-MM-DD.md`. Max. 1 page. No personal data and no secrets.
 Every number with a source and a time. No report by the first PM duty after 7:30 = a row in `pm/dyzur.md` (blocks: lead, waits: CEO).
 Divisions and leads: `README.md → Agenci`.
@@ -38,10 +38,10 @@ the division's external services (invoices, `toolbelt/katalog.md`): N PLN. Budge
 Only blockers inside the division that the lead has not resolved alone, and blockers from other divisions. Cross-division matters → also an entry in
 `zlecenia/ceo.md`. A division agent in `przebiegi/dead-letter/` = a blocker with owner "operator" (review) – always in this table.
 
-## 4. Boundaries and order (the lead's rulings during the week)
+## 4. Boundaries and sequence (the lead's rulings during the week)
 
 - Boundaries: <dispute> → <who does it>, why (link to the entry under the order).
-- Order for this week: <member>: 1. … 2. … 3. … (by portfolio EV and deadlines; P1 deadlines are not moved).
+- Sequence for this week: <member>: 1. … 2. … 3. … (by portfolio EV and deadlines; P1 deadlines are not moved).
 
 ## 5. Proposals for the CEO (max. 3, with EV)
 

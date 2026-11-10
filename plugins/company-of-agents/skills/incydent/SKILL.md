@@ -11,5 +11,5 @@ disable-model-invocation: true
 5. Rollback: revert code/configuration/MCP schema changes to the last good state (PR, not reset --hard).
 6. Rotate secrets with a transition period; check `toolbelt/sprawdz-dostepy.md`.
 7. Pre/post review: what failed among the safeguards (hook, watchdog, policies), MAST class, cost.
-8. Changes: prompt/policy/watchdog + **a new scenario in `ewaluacje/`**; report under AI Act art. 26(5), if applicable.
+8. Changes: prompt/policy/watchdog + **a new scenario in `ewaluacje/`**; report under AI Act Art. 26(5), if applicable.
 9. Resumption: the operator removes `bezpieczenstwo/HALT` after the review; entry in `decyzje/`.

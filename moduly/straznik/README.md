@@ -57,7 +57,7 @@ python3 moduly/straznik/straznik.py --sucho --repo .
 python3 -m unittest discover moduly/straznik
 ```
 
-Enabling it permanently is described in the "Running" section.
+Permanent set-up is described in the "Running" section.
 
 ## How a single run works
 
@@ -281,7 +281,7 @@ identifier occur in the file's text. Only the identifier and date are fetched �
 
 #### `automaty` – product automations
 
-Five independent parts. What happens when a part is not configured is described in the points below the table.
+Five independent parts. What happens when a part is not configured is described in the notes below the table.
 
 | Part | Source | Discrepancy | ID | Configuration |
 |---|---|---|---|---|
@@ -299,7 +299,7 @@ Five independent parts. What happens when a part is not configured is described 
   watchdog takes the first row of the result and the `bledy` column. Without this variable the part is skipped.
 - **Deployment workflow.** Repo: `STRAZNIK_FLY_REPO` (name or `właściciel/nazwa`), by default the first repo
   in `repo.produkt`; without both the part is skipped. Workflow name: `STRAZNIK_FLY_WORKFLOW`, by default `Fly Deploy`.
-- **Pages.** `STRAZNIK_PAGES` is comma-separated repo names (without the owner); none by default. A repo without GitHub
+- **Pages.** `STRAZNIK_PAGES` is a comma-separated list of repo names (without the owner); none by default. A repo without GitHub
   Pages is skipped with a note.
 
 ### The `klon` check
@@ -433,7 +433,7 @@ moduly/straznik/instaluj.sh --odinstaluj   # stops and removes the agent; the cl
   the checkout from which you run the installer).
 - The installer creates `~/Library/LaunchAgents/org.agenci.straznik.plist` from the template `straznik.plist.szablon`: a run
   every 900 s and immediately after loading, interpreter `/usr/bin/python3`, log in `~/Library/Logs/straznik-floty.log`.
-- Keep secrets in the keychain (section "Secrets"). Add plugins' non-secret variables to the `EnvironmentVariables`
+- Keep secrets in the keychain (section "Secrets"). Add the plugins' non-secret variables to the `EnvironmentVariables`
   dictionary in the plist template and run the installer again – the template is taken from the watchdog's clone, so the
   change must be on the repo's main branch.
 - Do not run launchd and the Actions schedule at the same time: alerts and entries would be duplicated.

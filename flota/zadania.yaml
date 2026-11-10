@@ -1,11 +1,11 @@
 # Fleet manifest – source of truth for scheduled tasks, cron, priority, model and prompts (flota/generuj.py).
 # Fields: agent (taskId = <prefiks>-<agent>-<konto>), katalog (name in koordynacja-odstepy.tsv; null = outside the lock),
-#   priorytet P1/P2/P3 (budget: limit ≥ 85% → P3 does not work, ≥ 95% → P2 neither), cron (time zone from org.yaml),
+#   priorytet P1/P2/P3 (budget: limit ≥ 85% → P3 does not work, ≥ 95% → nor does P2), cron (time zone from org.yaml),
 #   konto_w_prompcie, prompt (output file), tresc (content template), model (CLASS from org.yaml → runtime.modele: sedzia | mocny |
 #   lekki | mechaniczny – never a model ID; a new model is changed in one place), opis,
 #   USD BUDGETS: with org.yaml → runtime.rozliczenie = api – amounts; with team – WEIGHTS that flota/generuj.py scales to the
 #   fleet account capacity ((pojemnosc_miejsca_usd_miesiac + nadwyzka_usd_miesiac) × wykorzystanie_cel_proc) → flota/budzety.tsv:
-#   budzet_usd_przebieg (hard limit --max-budget-usd in scripts/przebieg-headless.sh; default the global value),
+#   budzet_usd_przebieg (hard limit --max-budget-usd in scripts/przebieg-headless.sh; default: the global value),
 #   budzet_usd_dzien (soft: once exceeded scripts/przebieg.sh prints BUDŻET-AGENTA – the agent works only in ZDARZENIE mode),
 #   budzet_usd_miesiac (80 % → warning; 100 % → przebieg.sh exits with code 10 without work; fleet ceiling in org.yaml → HALT),
 #   efekt (effort for scheduled tasks: low/medium/high), konektory (list of MCP connectors needed in the cloud).

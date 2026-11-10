@@ -14,7 +14,7 @@ and with a date; no personal data. KPIs: `ceo/kpi/kpi.md` F1, F7–F10.
 |---|---|---|---|---|---|---|---|---|---|---|
 | … | | | | | | | | | | |
 
-Total fleet cost (7 days): N USD · monthly pace: N USD of the budget `budzet_floty_usd_miesiac` = N % (80 % = watchdog warning, 100 % = HALT).
+Total fleet cost (7 days): N USD · monthly pace: N USD against the budget `budzet_floty_usd_miesiac` = N % (80 % = watchdog warning, 100 % = HALT).
 
 ## 2. Schedule coverage (failed runs)
 

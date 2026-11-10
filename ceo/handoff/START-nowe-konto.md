@@ -1,15 +1,15 @@
 # Start message for the CEO after the fleet is moved to a new account (paste as the first message)
 
 Only when the fleet is moved (change of operator, plan or the organisation's account) – NOT when the limit is exhausted: the fleet does not
-switch between accounts of different people (`ceo/handoff/konto-floty.md`). After the move, the old account disables its tasks.
+switch between accounts of different people (`ceo/handoff/konto-floty.md`). After the move, the tasks on the old account are disabled.
 
-Where: the Claude app signed in to the new account → Code → new session in the organisation repo folder → type it on the machine's keyboard
+Where: the Claude app signed in to the new account → Code → new session in the organisation repo folder → type it on that machine's keyboard
 (then the scheduled tasks will record the permissions mode). Model: from `flota/zadania.yaml` (CEO). Before pasting, the operator connects
-the connectors and plugins (`flota/konto-start.md`, section 1). The operator fills in the account letters.
+the connectors and installs the plugins (`flota/konto-start.md`, section 1). The operator fills in the account letters.
 
 ---
 
-You are the CEO agent of the organisation <NAZWA> on fleet account <NOWE> (fleet moved from account <POPRZEDNIE>; `org.yaml →
+You are the CEO agent of the organisation <NAZWA> on the fleet account <NOWE> (fleet moved from account <POPRZEDNIE>; `org.yaml →
 runtime.konto` = <NOWE>, description in `ceo/handoff/konto-floty.md`). You report to the owner via
 `ceo/do-decyzji.md` and to the operator via `operator/kolejka.md`; mandate from `org.yaml` and `decyzje/`.
 

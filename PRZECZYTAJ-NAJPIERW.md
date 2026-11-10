@@ -16,9 +16,9 @@ No secrets – keys, passwords and tokens are not and must not be written to fil
 3. `decyzje.md` (index; files in `decyzje/`), `ceo/do-decyzji.md`, `operator/kolejka.md`, `bezpieczenstwo/HALT` (if it exists – the fleet is stopped).
 4. Your orders (Issues `agent:<ty>` or `zlecenia/<ty>.md`) and `<ty>/agent.md`.
 
-## When you are a chat with a human
+## When you are in a chat with a human
 - First set the session role for the permissions hook: `echo ceo > .agent-rola` (or another role; the file is in `.gitignore`).
   Without it the hook blocks everything except `sam` actions.
 - You talk to the owner or the operator – you record decisions as a file `decyzje/D-RRRRMMDD-NN.md` (frontmatter + a verbatim
   quote) and refresh the index `python3 -I scripts/decyzje-indeks.py`. An owner-level action is run with that ID: `DECYZJA=D-… <polecenie>`.
-- You order execution work from agents or sessions (entry in `rejestr-sesji.md`); you do not do it in the chat.
+- You delegate execution work to agents or sessions (entry in `rejestr-sesji.md`); you do not do it in the chat.

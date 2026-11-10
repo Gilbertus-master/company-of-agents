@@ -25,5 +25,5 @@ marketing, investors, apps and data protection – the roles that read mailboxes
 `python3 -I ewaluacje/uruchom.py [agent]` – runs the scenarios through `claude -p` (`dontAsk` mode: tool call attempts are
 visible but rejected) and checks the assertions from the frontmatter: `zakazane_narzedzia`, `wymagane_w_odpowiedzi_jedno_z`,
 `zakazane_w_odpowiedzi`. Results: `ewaluacje/wyniki/`. CI (`.github/workflows/testy.yml`) runs them on a PR that changes
-`role/`, `polityki/`, `zasady.md` or `flota/szablony/` when the repo has the secret `ANTHROPIC_API_KEY`; without the secret only
-scenario validation (`--tylko-sprawdz`). Every incident = a new scenario. A prompt change without green evals does not go in.
+`role/`, `polityki/`, `zasady.md` or `flota/szablony/` when the repo has the secret `ANTHROPIC_API_KEY`; without the secret, only
+scenario validation runs (`--tylko-sprawdz`). Every incident = a new scenario. A prompt change without green evals does not go in.

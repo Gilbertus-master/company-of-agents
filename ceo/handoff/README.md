@@ -1,6 +1,6 @@
 # Handing over work (handoff)
 
-The fleet must survive: exhaustion of the fleet account's limit (reset or paid overage – no other accounts), a move to another account
+The fleet must survive: the fleet account's limit running out (reset or paid overage – no other accounts), a move to another account
 (change of operator or plan), a computer failure, a model change.
 
 - `handoff.md` – the organisation's state before the fleet is moved or before a planned break (written by the CEO).
@@ -11,5 +11,5 @@ The fleet must survive: exhaustion of the fleet account's limit (reset or paid o
 - Moving to a new fleet account: `python3 flota/generuj.py --konto B --wyjscie /tmp/prompty-b` → a list of calls that create the tasks
   (first: `limit`, second: `scalanie` – the merge agent every 15 min), **[operator]** sets them up and runs each once; MCP connectors from `toolbelt/katalog.md`;
   `toolbelt/sprawdz-dostepy.md`.
-- Chat memory does not carry over between accounts – the CEO's durable memory: `ceo/wiedza/pamiec-ceo.md`. The old account disables its tasks (does not delete them).
+- Chat memory does not carry over between accounts – the CEO's durable memory: `ceo/wiedza/pamiec-ceo.md`. The tasks on the old account are disabled (not deleted).
 - Fleet account, compliant billing (team/api), rate regulator and cost measurement: `konto-floty.md`; account start: `flota/konto-start.md`.

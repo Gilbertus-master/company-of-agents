@@ -1,4 +1,4 @@
-# Thresholds of management controls – the single source of numbers for ceo/kontrole/kontrole.md and scripts/kontrole.py.
+# Thresholds for management controls – the single source of numbers for ceo/kontrole/kontrole.md and scripts/kontrole.py.
 # "(start)" = first proposal: adjusted after 2 weeks of measurement (control H-03); every change → a row in ceo/wiedza/zmiany-instrukcji.md.
 # Format: flat `klucz: liczba` (the script reads it without PyYAML). A threshold that is not here must not be written into a control's text.
 limit_kontroli: 90                # above this: first remove a control with no failure for 4 weeks that does not guard a legal requirement (§)
@@ -64,9 +64,9 @@ zrodla_nieczytelne_max_proc: 5        # M5: share of "unchecked" controls (start
 zmiany_operacyjne_tydzien_max: 2      # Z7: instruction changes per week
 
 # --- merge queue (scripts/scalanie.py, description: ceo/scalanie/README.md) ---
-gotowy_rezerwa_ceo_min: 45            # B-02: merge agent without a trace for this many minutes → the CEO run merges (REZERWA_CEO: TAK)
+gotowy_rezerwa_ceo_min: 45            # B-02: merge agent silent for this many minutes → the CEO run merges (REZERWA_CEO: TAK)
 blokada_scalania_min: 30              # a merge lock not refreshed for longer than this many minutes is taken over
 brak_ci_eskalacja_min: 30             # PR with no checks at all: after a retry and this many minutes the matter goes to the CEO
 pliki_sporne_min_pr: 3                # B-12: a file changed by at least this many open PRs goes into the PLIKI SPORNE line
 werdykt_ok_niescalony_max: 3          # B-02 (start): how many PRs with an OK verdict may wait longer than werdykt_ok_niescalony_h
-zlecenie_scalania_termin_h: 4         # deadline of the order the queue writes to the owner of the obstacle
+zlecenie_scalania_termin_h: 4         # deadline of the order the queue writes to whoever owns the obstacle

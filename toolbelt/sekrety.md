@@ -46,6 +46,6 @@ because an agent can change the repo):
 ```
 - `allowedDomains` per agent type from `flota/zadania.yaml → domeny` (reader: repo only; actor: repo + the role's services).
 - `credentials.mode: mask` – commands get a sentinel value, the real secret is injected only for allowed hosts.
-- By default the sandbox reads `~/.ssh` and `~/.aws` – disable it (`permissions.deny` in `.claude/settings.json` already does this for Read).
+- By default the sandbox reads `~/.ssh` and `~/.aws` – block this (`permissions.deny` in `.claude/settings.json` already does this for Read).
 - Identities: GitHub App (1 h token) instead of a PAT; Stripe keys tagged Agent per agent (before 30.11.2026); read-only DB roles.
 - Check: `toolbelt/sprawdz-dostepy.md` – row "no secret is readable from the session" (`printenv | grep -i key` ⇒ empty; `cat .env` ⇒ hook block).

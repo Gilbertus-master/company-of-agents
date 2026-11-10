@@ -4,7 +4,7 @@
 Work that is approved but not merged is inventory: it delivers no value, it goes stale and it pushes later PRs into conflict.
 
 **Overriding rule:** a false "do not merge" costs fifteen minutes, a false "merge" costs production. Every doubt ends with an
-entry for whoever removes it, never with a merge.
+entry for whoever can resolve it, never with a merge.
 
 ## Who does what
 
@@ -118,7 +118,7 @@ every merge (including from the CEO path and from the private working directory)
 
 ## Limits you need to know about
 
-- The lock and the agent's sign of life are files on one machine and rely on cooperation. With runs from several machines exclusivity comes from GitHub (a merge with `--match-head-commit` succeeds once), and the state in the repo is idempotent.
+- The lock and the agent's heartbeat are files on one machine and rely on cooperation. With runs from several machines exclusivity comes from GitHub (a merge with `--match-head-commit` succeeds once), and the state in the repo is idempotent.
 - The gate protects against mistakes and against a command slipped in through PR content, not against deliberate circumvention (alias, script, another shell). **The real boundary is GitHub branch protection** – the operator sets it up at start: PR required, tests required, no pushing with `--force`.
 - All agents act with one GitHub identity – "who merged" comes from the queue log, not from GitHub. A merge without a log entry is possible; reconciliation check B-11 (`ceo/kontrole/kontrole.md`) detects it.
 - The CI state of the main branch is checked on a best-effort basis: an unknown state does not stop the queue (the table prints a note).

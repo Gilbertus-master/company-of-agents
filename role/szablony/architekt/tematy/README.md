@@ -7,7 +7,7 @@ and the CEO sees the stage without reading logs. Limit: **one topic in build at 
 **Rules.** File header: order (ID, from whom, date), worktree and branch (`agent/architekt-<temat>` from the main branch), stage
 (`rozpoznanie` · `projekt` · `plan` · `budowa` · `PR #N` · `zamknięty <data>` · `przekazany inżynierowi <data>`). The stage is also in
 `stan.json → tematy`. Before starting: claim the work (`[w toku …]`, push) and `gh pr list --search "<temat>"` – so sessions are not duplicated.
-Specifications and plans live in the product repo (`docs/superpowers/specs/`, `docs/superpowers/plans/`); here links and decisions, not copies.
+Specifications and plans live in the product repo (`docs/superpowers/specs/`, `docs/superpowers/plans/`); here: links and decisions, not copies.
 **No personal data** (production aggregates – yes, records – no) and no secrets. **Updated by:** the architect – every run in which
 the topic changed; closed after merge and the tester's confirmation.
 

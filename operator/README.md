@@ -15,7 +15,7 @@ prioritise work and do not decide on strategy – the CEO does that within the o
 | Contact requiring a human | a phone call when the other party does not accept AI, a meeting | the other party's choice |
 
 Everything outside the list goes back to the CEO with the question "why is a human doing this?". Every operator task should have
-a plan for removing the human from the loop (API, power of attorney, service account) – the CEO tracks it in KPI "operator minutes / week".
+a plan for removing the human from the loop (API, power of attorney, service account) – the CEO tracks it in the KPI "operator minutes / week".
 
 ## How they work
 1. Once or twice a day (or after a notification) they open `operator/kolejka.md`.

@@ -1,4 +1,4 @@
-# ADR 0002 · Deterministic gates in a hook instead of the CEO agent's judgement · status: accepted · 2026-11-09
+# ADR 0002 · Deterministic gates in a hook instead of the CEO agent's judgement · status: przyjęty (accepted) · 2026-11-09
 
 ## Context
 Template v0.1 treated the CEO agent's approval ("[Decyzja CEO]") as the gate for money, merges and deployments. Project Vend 2 (Anthropic) showed
@@ -15,7 +15,7 @@ owner approval only as a `DECYZJA=D-…` that exists in `decyzje/`, kill switch 
 
 ## Consequences
 - The agent cannot be "talked round": manipulation in an e-mail can change its intent, but not the threshold in the file or the hook's decision.
-- The hook knows only command and tool patterns – the rule applies more widely than its enforcement (rules A1); new sending/payment tools
+- The hook knows only command and tool patterns – the rule applies more widely than its enforcement (rule A1); new sending/payment tools
   need a pattern in the hook and a test (`test_uprawnienia.py`).
 - Every permissions change is an owner decision with an ID; loosening happens on the basis of history (monthly review – `procesy/50`), not trust.
 - Cost: a slower start (everything cautious), a dozen or so seconds per run for the hook, the audit grows (`merge=union`, archiving).

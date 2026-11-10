@@ -9,10 +9,10 @@ Every policy has a version, a date and the decision `D-…` that approved it. Ch
 | File | What | Who applies it |
 |---|---|---|
 | `cennik.md` | prices, plans, currencies, periods | sales, support, marketing |
-| `zwroty.md` | when a refund, how much, up to which CEO threshold, above it – owner | support (request), CEO (decision) |
-| `rabaty.md` | which discounts exist; off the list – there are none | sales |
+| `zwroty.md` | when to refund, how much, up to the CEO's threshold; above it – owner | support (request), CEO (decision) |
+| `rabaty.md` | which discounts exist; anything not on the list does not exist | sales |
 | `komunikacja.md` | tone, signature, AI footer, what we do not promise | everyone writing externally |
-| `outbound.md`, `blacklista.tsv` | outbound contact: consents (art. 398 PKE), channels, limits | sales, marketing |
+| `outbound.md`, `blacklista.tsv` | outbound contact: consents (Art. 398 PKE), channels, limits | sales, marketing |
 | `progi.yaml` | numeric thresholds read by the hook (refunds, expenses, outbound) | permissions hook |
 
 Policy template:

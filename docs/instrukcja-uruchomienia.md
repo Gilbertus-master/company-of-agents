@@ -11,7 +11,7 @@ Details: `ceo/handoff/konto-floty.md`, `flota/konto-start.md`, `procesy/00-nowa-
 | **GitHub account** | access to the template and the company repo – through `gh` on the machine, independent of the Claude account | `gh auth login` |
 | **Company repo** | the organisation's memory; a copy of the template with updates as PRs | a copy of the template |
 
-**No account rotation.** The fleet does not switch to another person's account that has free limit: Pro/Max/Ultra plans are for
+**No account rotation.** The fleet does not switch to another person's account that has limit to spare: Pro/Max/Ultra plans are for
 non-commercial use and must not be shared, and on the Team plan every seat belongs to one named person and limits must not be
 transferred or shared (`ceo/handoff/konto-floty.md`).
 
@@ -47,8 +47,8 @@ tests ✓ and a list of tasks to create. The watchdog starts by itself in GitHub
 ## 4. The fleet on the fleet account
 1. **Sign-in:** the Claude app on the fleet account → Code → the company repo folder; a session started from this machine's keyboard
    (scheduled tasks remember the permissions mode). Bypass is disabled (`.claude/settings.json`), the hook holds the boundaries.
-2. **Account:** connectors and plugins the roles need (`flota/konto-start.md`). The class models from `org.yaml → runtime.modele` must be
-   available on the account; a model missing → change the class mapping and run `python3 flota/generuj.py`.
+2. **Account:** connectors and plugins the roles need (`flota/konto-start.md`). The models for each class in `org.yaml → runtime.modele` must be
+   available on the account; if a model is missing → change the class mapping and run `python3 flota/generuj.py`.
 3. **First message:** the starting prompt (section 5).
 4. **Core tasks** (order: `limit`, `scalanie`, `ceo`, `recenzent`, `pm`):
    - in the app: `python3 flota/generuj.py --konto A --wyjscie ~/<prefiks>-prompty-a --tylko limit,scalanie,ceo,pm,recenzent`
@@ -94,4 +94,4 @@ Commit, push. Finally write briefly to the operator: what works, what is in prog
 | Alert "bez przebiegu" (no run) | the task on the fleet account: enabled? model, mode, connectors? |
 | Manifest change (`flota/zadania.yaml`) | `python3 flota/generuj.py`, commit, change the tasks on the fleet account |
 | Update PR with a conflict | the architect merges manually on a working branch (`scripts/aktualizuj-z-szablonu.sh` without `--pr`) and opens a PR |
-| Moving the fleet to another account (change of operator or plan) | `ceo/handoff/START-nowe-konto.md`; the old account disables its tasks |
+| Moving the fleet to another account (change of operator or plan) | `ceo/handoff/START-nowe-konto.md`; the tasks on the old account are disabled |

@@ -2,7 +2,7 @@
 > the validator `pm/narzedzia/przebieg-raport.py` and the rules are universal. The per-agent source table (section 4) is **an example from
 > the source organisation** (e.g. the product repo, an app store, mobile build CI) – each new organisation fills it in for its own agents and services from `toolbelt/katalog.md`.
 > The rows for roles added in the template (inzynier, tester, lokalizacja, compliance, wywiad) are already universal – they follow from the
-> "Sources checked in every run" section in `role/<rola>.md`; new role = new row here in the same PR (`procesy/60-cykl-zycia-agenta.md`).
+> "Sources checked in every run" section in `role/<rola>.md`; a new role = a new row here in the same PR (`procesy/60-cykl-zycia-agenta.md`).
 > **Fields added in the template (optional):** `model` (text); `koszt_usd` in the contract line stays empty (`null`) – the cost of a run
 > is measured by `python3 -I scripts/koszt.py zapisz --agent <agent>` (tokens from the session transcript × `flota/ceny-modeli.yaml`) and stored separately
 > in `przebiegi/<agent>/koszty-<data>.jsonl` (headless wrapper – from the CLI result); entering the cost here as well would count it twice.
@@ -28,7 +28,7 @@ when the run failed (then `wynik: "BŁĄD"`). The line says **what the agent rea
 A run without a line, without numbers, or with numbers not backed by the source = **failed run**, regardless of the session status in the Claude app.
 The report does not replace the log (`<agent>/dziennik.md` – for humans and the CEO) or `stan.json` (the agent's memory); it is for machines: the fleet watchdog, the PM and KPIs.
 
-Does not apply to: a run ended with **code 10** of the `koordynacja.md` protocol (second account; trace = tag `przebieg/<agent>/<okienko>` on origin – the watchdog reads tags).
+Does not apply to: a run that ends with **code 10** of the `koordynacja.md` protocol (second account; trace = tag `przebieg/<agent>/<okienko>` on origin – the watchdog reads tags).
 Chats with the owner and dev sessions write a line only when they do the work of an agent with a mailbox (`tryb: "CZAT"`); the PM on duty – `tryb: "DYŻUR"`.
 
 ## 2. File
@@ -40,7 +40,7 @@ Chats with the owner and dev sessions write a line only when they do the work of
   (code 1) and says why; the agent fixes it and appends again. Without the tool (no Python): `printf '%s\n' '<json>' >> przebiegi/<agent>/<data>.jsonl`.
 - Commit: together with the agent's other files; in CISZA **a separate commit of this file only**: `git add przebiegi/<agent>/ && git commit -m "<agent>: przebieg CISZA <data> <GG:MM>"`,
   then `git pull --rebase` and push as before. A conflict in `.jsonl` (two accounts appended to the same file) is resolved by **keeping both lines**; so that git does
-  it by itself, the CEO adds the line `przebiegi/**/*.jsonl merge=union` to `.gitattributes` in the root directory (PM proposal – the file is outside my scope).
+  this automatically, the CEO adds the line `przebiegi/**/*.jsonl merge=union` to `.gitattributes` in the root directory (PM proposal – the file is outside my scope).
 - No personal data (no e-mail addresses, names, phone numbers – only thread IDs, numbers, roles), no secrets, no e-mail content. The validator rejects a line with an e-mail address.
 - Retention: daily files stay in the repo; on the first day of the month the PM merges the previous month into `przebiegi/<agent>/<RRRR-MM>.jsonl` (one operation, line content unchanged).
 
@@ -55,7 +55,7 @@ Chats with the owner and dev sessions write a line only when they do the work of
 | `okienko` | number | no | Output of `scripts/przebieg.sh okienko <agent>` – ties the line to the lock tag `przebieg/<agent>/<okienko>`. |
 | `start`, `koniec` | ISO 8601 text with time zone | yes | `2026-11-08T13:04:00+01:00` (Warsaw time; `date -Iseconds`). The tool fills in `koniec` when missing. |
 | `tryb` | text | yes | As in the agent's instructions: `CISZA`, `ZDARZENIE`, `DZIENNY`, `TYGODNIOWY`, `PEŁNY`, `PRACA` (architekt), `WYDANIE` (marketing), `CZAT`, `DYŻUR`, `BŁĄD` (run aborted before a mode was chosen). |
-| `zrodla` | list of objects | yes, non-empty (also CISZA) | One per **each mandatory work source of the agent** from section 4 – even when everything = 0. Fields below. |
+| `zrodla` | list of objects | yes, non-empty (also CISZA) | One for **each mandatory work source of the agent** from section 4 – even when everything = 0. Fields below. |
 | `akcje` | list of objects | yes (may be `[]`) | What the agent did, **by ID**: `{"typ": "zlecenie|pr|commit|plik|wpis|zlecenie_dla|sesja|przypomnienie|decyzja", "id": "…", "opis": "≤ 80 characters"}`. |
 | `rozbieznosci` | list of objects | yes (may be `[]`) | Every source in which the numbers do not add up (section 5): `{"zrodlo", "opis", "liczby": {…}, "ids": […], "dzialanie"}`. |
 | `bledy` | list of objects | yes (may be `[]`) | `{"gdzie": "Resend|gh|ASC|Supabase|git|skrypt <nazwa>|…", "komunikat": "≤ 200 characters, no secrets", "skutek": "przebieg przerwany|źródło pominięte|akcja nieudana", "zrodlo": "<source name, if applicable>"}`. |
@@ -128,7 +128,7 @@ new entries since `stan.json → ostatni_przebieg` concerning the agent (`nowe`)
 | **architekt** | `zlecenia/architekt.md` | common; `otwarte` = without a PR/package after the deadline | `stan.json → w_budowie` | order in progress without a stage in the progress register > 1 window |
 | | `PR własne otwarte` | PRs of the architect and of dev sessions (`gh pr list --author`, label/branch `claude/architekt-*`, packages `architekt/rownolegle/`) / new / with a reply to reviewer comments / in `stan.json → w_budowie` | `stan.json`, `architekt/rownolegle/*.md` | PR with reviewer comments without a reply > 1 window; package without a session > 24 h |
 | | `sesje dev (rodzic: architekt)` | sessions in `rejestr-sesji.md` with parent architekt / new reports / collected (result checked, line closed) / rows | `rejestr-sesji.md` | session report not collected > 1 window |
-| | `opinie TestFlight → pakiety` | orders from aplikacje with an ASC feedback ID / new / assessed (valid → package/PR; doubtful → `zlecenia/ceo.md`) / `**TestFlight:**` entries in the log | `aplikacje/opinie-testflight.md` (feedback ID) | feedback at the architect without a PR/package/decision > 24 h |
+| | `opinie TestFlight → pakiety` | orders from aplikacje with an ASC feedback ID / new / assessed (valid → package/PR; doubtful → `zlecenia/ceo.md`) / `**TestFlight:**` entries in the log | `aplikacje/opinie-testflight.md` (feedback ID) | feedback held by the architect without a PR/package/decision > 24 h |
 | **recenzent** | `PR otwarte produkt` | `gh pr list --state open` (no drafts, no "[20.11") **by number and head SHA** / without a verdict for the current SHA / reviewed in the run / `stan.json → recenzje` entries | `recenzent/stan.json → recenzje` | PR without a verdict for head after the run (`ids_bez_sladu`) |
 | | `PR scalone 7 dni` (PEŁNY) | merged / remedial (naprawa/fix/revert) after PRs with verdict OK / – / – | `recenzent/stan.json` | remedial after OK → entry in the playbook |
 | **aplikacje** | `ASC uwagi` | `betaFeedbackScreenshotSubmissions` + `betaFeedbackCrashSubmissions` **all, by ID** / ID not in the register / registered + order in the run / register rows | `aplikacje/opinie-testflight.md` | `przeczytane ≠ w_rejestrze` or new > handled |
@@ -199,7 +199,7 @@ is `przeczytane: null` + `bledy`, **not** `0`.
 5. The line is created **before the final commit**, also when the run ends with a tool error – then `tryb: "BŁĄD"` and whatever could be established.
 6. **Failed run** (for the watchdog, the PM and KPIs): no line within the schedule window (tolerance: window length + 30 min), `wynik: "BŁĄD"`, `NIEPEŁNY` two runs
    in a row for the same source, or a discrepancy without `dzialanie`. Failed run = a line in the PM's report for the CEO (daily) and in the Friday review.
-7. Do not duplicate: you describe actions once (in `akcje` by ID); the log may summarise, it does not have to repeat the numbers.
+7. Do not duplicate: describe actions once (in `akcje` by ID); the log may summarise them and need not repeat the numbers.
 
 ## 6. The `pm/narzedzia/przebieg-raport.py` tool (no LLM, no network)
 
@@ -210,7 +210,7 @@ is `przeczytane: null` + `bledy`, **not** `0`.
   (basis of the Friday review and the KPI row). Tested on 8.11 with the examples from section 3 (valid line accepted, invalid one rejected with 4 reasons).
 - Recommended pattern in a run: write the JSON to a temporary file (`$TMPDIR/przebieg.json`), call `dopisz`, only then `git add`/commit.
 
-## 7. Block to paste into `<agent>/agent.md` (pasted by the CEO; substitutes `<agent>` and the source list from section 4 for each agent)
+## 7. Block to paste into `<agent>/agent.md` (pasted by the CEO, who substitutes `<agent>` and the source list from section 4 for each agent)
 
 ```markdown
 ### Run contract – machine report after EVERY run, also CISZA (from 9.11.2026, stage 1 of reliability; spec: `pm/specyfikacje/2026-11-08-kontrakt-przebiegu.md`)
@@ -244,7 +244,7 @@ agent logs, `decyzje.md`. Per-agent table and fleet summary:
 |---|---|---|
 | Run coverage | lines in `przebiegi/` ÷ runs expected from the schedule (`koordynacja-odstepy.tsv`, 7 days; code 10 = expected run fulfilled by the second account) | 100 % |
 | Runs without a report with numbers | no line in the window + `NIEPEŁNY` + `BŁĄD` | 0 % |
-| CISZA share | lines with `tryb = CISZA` ÷ all – too high (> 90 % at a 3 h rhythm) = candidate for a sparser rhythm (review of recurring tasks) | – |
+| CISZA share | lines with `tryb = CISZA` ÷ all – too high (> 90 % at a 3 h rhythm) = candidate for a less frequent rhythm (review of recurring tasks) | – |
 | Discrepancies | count, per source; how many handled in the same run; how many open > 1 window | items missed in reconciliations: 0 |
 | Incidents | watchdog events + incidents from logs/decisions: start, detection, who detected (watchdog / agent / PM / CEO / owner), cause class A–H from the analysis | detected by the owner: 0 |
 | MTTD | median (detection − start) of the week's incidents; MTTR – median (resolution − detection) | MTTD ≤ 30 min |
@@ -253,7 +253,7 @@ agent logs, `decyzje.md`. Per-agent table and fleet summary:
 
 Review output: (1) the table above; (2) the 3 biggest causes of the week (classes A–H) with examples by ID; (3) **max. 5 proposals** to `zlecenia/ceo.md`
 (new watchdog check, invariant for CI tests, rhythm change, change to an agent's instructions – what, why, effect, risk); (4) a `**KPI:**` line with the metrics
-(proposal of new organisation KPIs `K9 – przebiegi bez raportu z liczbami (%)` and `K10 – MTTD awarii automatów` for `ceo/kpi/kpi.md`, measured from `podsumuj` and the watchdog).
+(proposed new organisation KPIs `K9 – przebiegi bez raportu z liczbami (%)` and `K10 – MTTD awarii automatów` for `ceo/kpi/kpi.md`, measured from `podsumuj` and the watchdog).
 The metrics go onto the plan page in the KPI section once added to `kpi.md`/`pomiar.py` (CEO).
 
 ## 9. Rollout (proposed order for the CEO) and risks
@@ -263,8 +263,8 @@ The metrics go onto the plan page in the KPI section once added to `kpi.md`/`pom
 2. 9.11: first run of each agent with a line; the PM in the 6:45 and 9:45 runs checks `podsumuj 1` and reports agents without a line; the watchdog (architekt) reads
    `przebiegi/` in check 1 instead of the freshness of `stan.json`.
 3. 14.11 (Friday): first reliability review (section 8); calibration: which discrepancies are noise (e.g. `w_rejestrze` for incremental sources).
-- **Cost:** approx. 1,000 CISZA commits/week with 17 tasks every 3 h (line ~1 KB) – little space, a lot of noise in `git log`; if it gets in the way, alternative: the watchdog
-  reads the files locally (same Mac), and CISZA commits only once a day (the PM merges) – CEO decision after a week.
-- **Risk:** an agent enters numbers "off the top of its head" – hence registers by ID and the watchdog counting independently (ASC, PR, mailboxes); line and watchdog disagreeing = class A incident.
+- **Cost:** approx. 1,000 CISZA commits/week with 17 tasks every 3 h (line ~1 KB) – little space, a lot of noise in `git log`; if it gets in the way, the alternative: the watchdog
+  reads the files locally (same Mac), and CISZA lines are committed only once a day (the PM merges them) – CEO decision after a week.
+- **Risk:** an agent makes numbers up "off the top of its head" – hence registers by ID and the watchdog counting independently (ASC, PR, mailboxes); line and watchdog disagreeing = a class A incident.
 - **Risk:** `.jsonl` conflicts between accounts – `merge=union` + the "keep both lines" rule.
 - **Out of scope (stages 2–3):** consent register with IDs (`decyzja` in `akcje` currently refers to `decyzje.md` by date and abbreviation), GitHub Issues as the queue (then the order `id` = issue number).

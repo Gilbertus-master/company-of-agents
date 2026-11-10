@@ -57,7 +57,7 @@ security fix (hook, watchdog). Done by the company's CEO in a PR or by the opera
 
 A company may add a path to `.szablon-lokalne` (e.g. its own process `procesy/45-…` – it does not collide anyway) or remove one (e.g. it wants
 to take `uprawnienia.yaml` from the template) – that is a decision of the company's CEO recorded in the log. Changing `role/<rola>.md` locally is allowed,
-but better: generalise it and send it to the template (section 4), and keep local refinements in `<agent>/agent.md` (local).
+but it is better to generalise it and send it to the template (section 4), and keep local refinements in `<agent>/agent.md` (local).
 
 ## 4. Changes flowing upstream (company → template)
 

@@ -45,7 +45,7 @@ or decommissioning. Gate result: a line in the CEO log and a status in `backlog.
 ## 4. Change of role
 When the scope shifts (e.g. compliance hands GDPR over to a new data-protection role):
 1. CEO decision with a map of "what moves, to whom, from when" (`decyzje/`), entry in `backlog.md`.
-2. PR: new/changed role in `role/`, update of `role/<rola>.md` on both sides (what is moved 1:1 is removed from the giver), `opis` in the manifest,
+2. PR: new/changed role in `role/`, update of `role/<rola>.md` on both sides (what is moved 1:1 is removed from the original role), `opis` in the manifest,
    KPIs in `kpi.md`, source table in the contract, registers: files moved with `git mv` (history stays) or new ones from `role/szablony/`.
 3. Open orders in the old scope → rewritten to the new addressee with a note (header `[otwarte] … · przeniesione z <agent>`).
 4. Evals: scenarios for the new role when it reads untrusted content; AI register and processing register updated.

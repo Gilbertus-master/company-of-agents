@@ -8,7 +8,7 @@ description: Run contract of an organisation agent – start (lock, budget), mod
    no work and no commit (window taken, budget, dead-letter); any other ≠ 0 = finish with the error description. Time from `date`.
 2. Read: `uprawnienia.yaml` (your rows), new `decyzje/` since `stan.json → ostatni_przebieg`, your orders,
    `stan.json`, the last 3 log entries, `wiedza/podrecznik.md`.
-3. Mode: PEŁNY (full; once a week, your day, once per day) · ZDARZENIE (event; new order/decision/deadline ≤ 3 h) · DZIENNY (daily;
+3. Mode: PEŁNY (full; once a week, on your day, at most once a day) · ZDARZENIE (event; new order/decision/deadline ≤ 3 h) · DZIENNY (daily;
    first run of the day) · CISZA (silent; nothing new → one sentence, a JSON line and a separate commit of only the `przebiegi/<agent>/` file –
    run contract; you commit no other files).
 4. Work within your scope; other agents' areas = an order (zlecenia/README.md); matters for a human → the CEO.

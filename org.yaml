@@ -1,4 +1,4 @@
-# Organisation configuration – the ONLY place with data of a specific company.
+# Organisation configuration – the ONLY place holding a specific company's data.
 # Everything else in the template (prompts, scripts, watchdog) reads from here. After a change: python3 flota/generuj.py
 # No secrets: keys and passwords are kept by the secrets manager (toolbelt/sekrety.md), here only item names.
 
@@ -67,7 +67,7 @@ runtime:
     lekki: "claude-sonnet-5-5"     # frequent roles constrained by policy (reception, support); with spare limit → a mocny-class model
     mechaniczny: "claude-haiku-5-5"  # closed list of actions without judgement (limit, scalanie)
   modele_sprawdzono: "2026-11-10"  # date of the last review of classes against new releases (F-13: no older than 35 days)
-  okno_celu_h: 168                 # rate regulator: the fleet account's weekly limit used evenly across the whole week
+  okno_celu_h: 168                 # pacing regulator: the fleet account's weekly limit used evenly across the whole week
 
 straznik:
   # Fleet watchdog (moduly/straznik) – active checks. Core: przebiegi, pr, zlecenia, konfiguracja.

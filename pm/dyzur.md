@@ -1,6 +1,6 @@
 # PM blocker duty – RRRR-MM-DD GG:MM (performed GG:MM–GG:MM, account X)
 
-Overwritten at every duty (`role/pm.md`, Daily item 2; procedure: skill `/dyzur-pm`). The file says **who is waiting for whom and since when**.
+Overwritten at each duty (`role/pm.md`, Daily item 2; procedure: skill `/dyzur-pm`). The file says **who is waiting for whom and since when**.
 Every number and time has a source from this duty (command + time from `date`) – never from memory or from the previous duty.
 A blocker > 6 h = an order to the CEO ("Dyżur blokad GG:MM"). No blockers: header, sources and the sentence "Dyżur: brak blokad."
 

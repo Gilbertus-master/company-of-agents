@@ -1,5 +1,5 @@
 # Permissions matrix: who may perform an external action without asking.
-# Levels: sam (agent performs it and reports) | ceo (CEO agent approves, entry „[Decyzja CEO]”) |
+# Levels: sam (agent performs it and reports) | ceo (CEO agent approves, entry "[Decyzja CEO]") |
 #          wlasciciel (decision D-… in decyzje.md from the chat) | operator (a human performs it – operator/kolejka.md) | nigdy
 # Action not on the list = wlasciciel. Extending the list = owner decision.
 # ENFORCEMENT: the hook .claude/hooks/uprawnienia.py blocks tools (Bash, MCP) that violate this table before they run.
@@ -9,9 +9,9 @@
 #   `bramka: kwota` – the hook lets `sam`/`agenci` roles through only when the amount in the command ≤ threshold `<czynność>_sam_usd` in polityki/progi.yaml;
 #   `bramka: pr` – only with the reviewer's OK verdict for the head SHA and green CI. Money and merging do not depend on the CEO agent's judgement
 #   (Project Vend 2: the CEO agent approved concessions 8× more often than it refused them). Kill switch: file bezpieczenstwo/HALT.
-#   Session role: file .agent-rola (written by scripts/przebieg.sh) or variable AGENT_ROLA; without a role only `sam` actions without a list.
-# At the start everything is cautious; every week the CEO proposes loosening where the history is clean
-# (ceo/agent.md, section „Upoważnienia” (authorisations)).
+#   Session role: file .agent-rola (written by scripts/przebieg.sh) or variable AGENT_ROLA; without a role, only `sam` actions with no list.
+# At the start everything is set cautiously; every week the CEO proposes loosening where the history is clean
+# (ceo/agent.md, section "Upoważnienia" (authorisations)).
 
 czynnosci:
   # --- communication

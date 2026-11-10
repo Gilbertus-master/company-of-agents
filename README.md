@@ -1,4 +1,4 @@
-# Agentic Organization – free core
+# Agentic Organisation – free core
 
 A git repository that runs a small fleet of Claude Code agents as an organisation: a CEO agent, a project manager, a
 reviewer, an architect, a rate-limit regulator and a merge agent – with the guard rails that keep an unattended fleet safe.
@@ -57,7 +57,7 @@ The core skills also ship as a plugin (`plugins/`, described in `plugins/<name>/
 /plugin marketplace add Gilbertus-master/company-of-agents
 /plugin install <name>@<name>
 ```
-where `<name>` is the name of this repository. The `new-organisation` skill creates the company repo and walks through the first start.
+where `<name>` is the name of this repository. The `new-organisation` skill creates the company repo and walks you through the first start-up.
 The plugin ships no hooks or permissions – the fleet's safeguards work inside the company repo.
 
 ## Sharing improvements – OFF by default
