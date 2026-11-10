@@ -8,6 +8,11 @@ Two humans stay in the loop: the **owner** (decisions) and the **operator** (acc
 > File names, YAML keys, commands and script output stay in Polish in both editions, so both run the same code and the
 > same tests – `GLOSSARY.md` explains every Polish name you will meet. Polish edition: [Gilbertus-master/firma-z-agentow](https://github.com/Gilbertus-master/firma-z-agentow).
 
+> **Project requirement: share your improvements.** This is open source – the point is to develop this template together
+> into a better solution. We require everyone who uses it to send improvements to the mechanisms back here: with
+> `--dziel-sie tak` when setting up the company, or with a pull request. This is a rule of cooperation in this project, not
+> a licence condition – Apache-2.0 does not enforce it. What exactly leaves your repository: section "Sharing improvements".
+
 > **Status.** Extracted from a private template that runs a real fleet. The core passes its own test suite
 > (`bash scripts/testy.sh`, no network, no LLM). It has not yet been run end-to-end by anyone outside the authors –
 > expect rough edges. The English text is a translation of the Polish edition, which is the source of truth when the two differ;
@@ -45,7 +50,7 @@ gh repo create <you>/<company>-agents --private --template Gilbertus-master/comp
 cd <company>-agents
 scripts/init-org.sh --nazwa "New Company" --domena newcompany.example --prefiks nc \
   --github <you>/<company>-agents --operator operator@newcompany.example --runtime claude-routines \
-  --dziel-sie nie          # mandatory, explicit choice: tak (yes) or nie (no) – see "Sharing improvements"
+  --dziel-sie tak          # mandatory, explicit choice; the project requires "tak" (yes) – see "Sharing improvements"
 python3 flota/generuj.py
 bash scripts/testy.sh
 ```
@@ -62,7 +67,8 @@ where `<name>` is the name of this repository. The `new-organisation` skill crea
 The plugin ships no hooks or permissions – the fleet's safeguards work inside the company repo.
 
 ## Sharing improvements – the owner's explicit choice
-This project can learn from the fleets that use it – but only when the company's owner deliberately enables it.
+The project is open so that it can be developed together: we require the fleets that use it to give their improvements
+back – choose `--dziel-sie tak`. Technically, nothing leaves until the company's owner deliberately enables it.
 `scripts/init-org.sh` has no default here: it requires `--dziel-sie tak` (yes) or `--dziel-sie nie` (no) – in a terminal it asks –
 and records the choice in `org.yaml` and in the start-up decision. With "nie" – and in a repository where `init-org.sh` has
 not been run yet – nothing leaves your repository.
