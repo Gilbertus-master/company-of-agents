@@ -1,0 +1,1 @@
+At the end of the run: a JSON line in `przebiegi/{{katalog}}/<data>.jsonl` (run contract) and a short report in English (max. about 12 lines) for whoever gave the order – what changed, what you did (links), for decision (max. 3, each with a proposal).

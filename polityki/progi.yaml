@@ -1,0 +1,6 @@
+# Amount thresholds of the deterministic gates (USD). Read by the hook .claude/hooks/uprawnienia.py.
+# Change = owner's decision (D-… in decyzje.md). Value 0 = the agent never acts alone.
+# Key name: <action from uprawnienia.yaml>_sam_usd.
+zwrot_klientowi_sam_usd: 50          # support refunds on its own up to this amount (polityki/zwroty.md gives the reasons); above – owner
+wydatek_ponizej_progu_sam_usd: 0     # expenses: initially only with the owner's decision; raise after 30 days without incidents
+outbound_dzien: 0                    # max. new outbound contacts per day (0 = no outbound until the owner decides)

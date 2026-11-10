@@ -1,0 +1,77 @@
+# Merge queue settings (scripts/scalanie.py). Flat format: `klucz: wartość` or `klucz:` + lines `  - "wzorzec"`.
+# Changed by the CEO via PR (rules file – merged by the CEO or a human, not the merge agent). Class description: ceo/scalanie/README.md.
+
+protokol: 1            # script ↔ task text contract number; raise it when commands or classes change – an old task will not take the lock
+galaz_glowna: main
+metoda: merge          # merge | squash | rebase; with PR stacks keep merge (squash changes the child's file list)
+ci_wymagane: tak       # PR with no check at all = BRAK_CI (one re-run, then the CEO)
+stop_gdy_glowna_czerwona: tak   # red main-branch tests stop the queue (row GLOWNA_CZERWONA → CEO); an unknown state is not treated as red
+
+# Repositories without PR tests (full owner/repo name) – missing checks do not block.
+bez_ci:
+
+# Paths the merge agent never merges – the WYJATEK row goes to the CEO (all repositories).
+# Pattern ending in "/" = directory from the start of the path; "/" in the middle = glob over the whole path; no "/" = glob over the file name.
+wyjatki:
+  - ".github/"
+  - ".claude/"
+  - "CLAUDE.md"
+  - "AGENTS.md"
+  - "*.env"
+  - ".env.*"
+  - "Dockerfile"
+  - "docker-compose*.yml"
+  - "fly.toml"
+  - "vercel.json"
+  - "netlify.toml"
+  - "wrangler.toml"
+  - "supabase/config.toml"
+  - "infra/"
+  - "deploy/"
+  - "terraform/"
+  - "prawne/"
+  - "legal/"
+  - "sklepy/"
+  - "fastlane/metadata/"
+
+# Organisation rule files (organisation repo only): the author does not merge their own rule change, nor does the merge agent – the CEO or a human does.
+reguly:
+  - "*/agent.md"
+  - "role/"
+  - "polityki/"
+  - "zasady.md"
+  - "uprawnienia.yaml"
+  - "org.yaml"
+  - "flota/szablony/"
+  - "flota/zadania.yaml"
+  - "ceo/handoff/prompty/"
+  - "ceo/scalanie/"            # settings, hold register, queue state and log
+  - "ceo/kontrole/progi.yaml"
+  - "recenzent/stan.json"      # verdicts – a PR that changes them could approve itself
+  - "scripts/"                 # mechanisms: queue, run lock, checks, tests
+  - "flota/generuj.py"
+  - ".gitattributes"
+  - "bezpieczenstwo/"
+
+# Organisation repo paths whose merge requires an owner decision (DECYZJA=D-… before the command, CEO path).
+# The list built into the script (zasady.md, uprawnienia.yaml, .claude/, polityki/) always applies – here it can only be extended.
+wlasciciel:
+  - "zasady.md"
+  - "uprawnienia.yaml"
+  - ".claude/"
+  - "polityki/"
+
+# Database migration directories – a PR with such a file is a MIGRACJA row (CEO; class B → owner), never merged by the agent.
+migracje:
+  - "migrations/"
+  - "*/migrations/*"
+  - "db/migrate/"
+  - "alembic/versions/"
+  - "*/alembic/versions/*"
+
+# PR labels that stop a merge (row DECYZJA → one entry for the CEO).
+etykiety_stop:
+  - "nie-scalac"
+  - "do-not-merge"
+  - "wip"
+  - "czeka-na-decyzje"

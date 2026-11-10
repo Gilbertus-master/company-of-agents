@@ -1,0 +1,17 @@
+{
+  "name": "company-of-agents",
+  "description": "Agentic organisation: skills for running a fleet of Claude Code agents like a company – new organisation, run contract, PM watch, review, incident.",
+  "owner": {
+    "name": "The Agentic Organization authors",
+    "url": "https://github.com/Gilbertus-master/company-of-agents"
+  },
+  "plugins": [
+    {
+      "name": "company-of-agents",
+      "source": "./plugins/company-of-agents",
+      "description": "Agentic organisation: skills for running a fleet of Claude Code agents like a company – new organisation, run contract, PM watch, review, incident.",
+      "version": "0.1.0",
+      "license": "Apache-2.0"
+    }
+  ]
+}

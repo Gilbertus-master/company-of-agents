@@ -1,0 +1,72 @@
+# Thresholds of management controls – the single source of numbers for ceo/kontrole/kontrole.md and scripts/kontrole.py.
+# "(start)" = first proposal: adjusted after 2 weeks of measurement (control H-03); every change → a row in ceo/wiedza/zmiany-instrukcji.md.
+# Format: flat `klucz: liczba` (the script reads it without PyYAML). A threshold that is not here must not be written into a control's text.
+limit_kontroli: 90                # above this: first remove a control with no failure for 4 weeks that does not guard a legal requirement (§)
+decyzja_wlasciciela_h: 48         # A-03, KPI K12 – a matter with the owner older than this many hours needs a "5 owner minutes" package
+decyzje_wlasciciela_max: 5        # A-03 (start) – how many matters older than the threshold may wait at once
+operator_sla_h: 24                # A-11 – when org.yaml → ludzie.operator.sla_godziny is not set
+rejestr_krytyczny_h: 24           # A-02 – critical item in another agent's register
+rejestr_wysoki_h: 72              # A-02 – high-severity item
+pozycja_bez_ruchu_h: 48           # A-07 – "w toku" (in progress) without a commit, PR or entry
+termin_prawny_wyprzedzenie_dni: 14  # A-08 – legal, tax and app-store deadlines within this window have an order
+pr_otwarty_h: 24                  # B-01
+pr_bez_werdyktu_min: 60           # B-01
+werdykt_ok_niescalony_h: 2        # B-02 (start)
+pr_konflikty_max: 3               # B-03 (start)
+pr_konflikt_h: 12                 # B-03 (start)
+wip_otwarte_max: 15               # B-04 (start) – open items per agent
+wip_w_toku_max: 5                 # B-04 (start)
+najstarsza_pozycja_dni: 7         # B-06
+przerobki_max_proc: 20            # B-07 (start) – PRs with a ZMIANY verdict or a fix after merge
+wdrozenie_po_scaleniu_min: 30     # B-10
+wydanie_po_zmianie_h: 48          # B-10 – store build after the last native change
+uwagi_recenzenta_h: 72            # D-02
+uwagi_recenzenta_max: 15          # D-02 (start)
+flaga_max_dni: 30                 # D-03
+dlug_przeglad_dni: 14             # D-01
+zaleznosc_sprawdzona_dni: 7       # E-04
+zaleznosc_wygasa_dni: 30          # E-04, E-05
+plan_do_przepustowosci_max: 1.2   # E-08
+limit_niewykorzystany_max_proc: 20  # E-08, F-04
+straznik_stan_max_min: 20         # F-01
+bezczynny_agent_proc_przebiegow: 5  # F-05 (start)
+probka_zrobione: 3                # F-09 – how many [zrobione] (done) entries per day the CEO checks at the source
+watek_klienta_h: 24               # G-01
+opinia_sklep_h: 48                # G-02
+aktywacja_min_proc: 50            # G-04 (start)
+model_finansowy_max_dni: 7        # G-08
+kontrole_p_zaliczone_min_proc: 90 # M1 (process 55)
+powtorka_z_rzedu: 3               # M4 – this many failures in a row = the control gets a mechanism (script, watchdog, hook)
+koszt_kontroli_max_proc: 20       # H-08 (start) – share of CEO run cost in fleet cost
+eksperymenty_w_toku_max: 2        # H-04 – management experiments at the same time
+eksperyment_okno_dni: 14          # process 55 – default experiment window
+okno_skutecznosci_dni: 28         # scripts/kontrole.py skutecznosc
+
+# --- thresholds used in the control texts (added 10.11) ---
+termin_prawny_zapas_dni: 3            # A-08: draft ready this many days before a legal deadline
+macierz_c_po_wydaniu_dni: 7           # C: controls without ⛔ get an order at the latest this many days after the release
+pierwszy_odczyt_miary_dni: 7          # C-12: first reading of a feature's metric
+test_po_scaleniu_h: 24                # D-07: the tester checks the merge
+sprawa_zewnetrzna_dni_roboczych: 5    # E-04: matter with an external party without movement (start)
+punkt_kontrolny_wyprzedzenie_dni: 7   # E-05: checkpoint before the deadline
+regulator_stan_max_min: 45            # F-04: age of the regulator's state file
+ten_sam_blad_z_rzedu: 2               # F-03: the same source error in consecutive runs
+powtorka_klasy_w_7_dni: 2             # F-06: the same failure class
+galaz_bez_pr_h: 48                    # F-10: branch without a PR
+incydent_zapis_h: 24                  # F-08 / Z6: incident record
+przestoj_automatu_h: 2                # Z6: automation downtime threshold
+pomiar_kpi_max_h: 24                  # G-03: age of the KPI measurement
+wniosek_rodo_wyprzedzenie_dni: 7      # G-06: deadline of a GDPR request or a complaint
+akcja_pozyskania_h: 48                # G-07: acquisition action
+ucieczka_mechanizm_dni: 7             # H-02: an escape gets a control or a mechanism
+kalibracja_min_dni: 14                # H-03: minimum data period before a threshold change
+zrodla_nieczytelne_max_proc: 5        # M5: share of "unchecked" controls (start)
+zmiany_operacyjne_tydzien_max: 2      # Z7: instruction changes per week
+
+# --- merge queue (scripts/scalanie.py, description: ceo/scalanie/README.md) ---
+gotowy_rezerwa_ceo_min: 45            # B-02: merge agent without a trace for this many minutes → the CEO run merges (REZERWA_CEO: TAK)
+blokada_scalania_min: 30              # a merge lock not refreshed for longer than this many minutes is taken over
+brak_ci_eskalacja_min: 30             # PR with no checks at all: after a retry and this many minutes the matter goes to the CEO
+pliki_sporne_min_pr: 3                # B-12: a file changed by at least this many open PRs goes into the PLIKI SPORNE line
+werdykt_ok_niescalony_max: 3          # B-02 (start): how many PRs with an OK verdict may wait longer than werdykt_ok_niescalony_h
+zlecenie_scalania_termin_h: 4         # deadline of the order the queue writes to the owner of the obstacle

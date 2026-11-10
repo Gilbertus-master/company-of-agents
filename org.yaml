@@ -1,0 +1,80 @@
+# Organisation configuration – the ONLY place with data of a specific company.
+# Everything else in the template (prompts, scripts, watchdog) reads from here. After a change: python3 flota/generuj.py
+# No secrets: keys and passwords are kept by the secrets manager (toolbelt/sekrety.md), here only item names.
+
+organizacja:
+  nazwa: "Nowa Firma"                 # trading name
+  podmiot: "Nowa Firma sp. z o.o."    # legal form (procesy/00-nowa-organizacja.md, stage 1)
+  domena: "example.com"               # domain of the agents' functional addresses
+  jezyk: "pl"                         # working and reporting language
+  strefa: "Europe/Warsaw"             # time zone of runs (scripts/przebieg.sh, watchdog)
+  prefiks: "org"                      # task prefix: <prefiks>-<agent>-<konto>, limit file ~/.<prefiks>-limit-<konto>.json
+
+repo:
+  organizacja: "~/projekty/nowa-firma-agenci"    # this directory after copying the template (private!)
+  github: "OWNER/nowa-firma-agenci"
+  produkt: []                                    # product code repositories, e.g. ["OWNER/nowa-firma-app"]
+  szablon: "Gilbertus-master/company-of-agents"        # template upstream (OWNER/repo or full URL) – scripts/aktualizuj-z-szablonu.sh, procesy/05
+  szablon_kanal: "stabilny"         # template updates: stabilny (latest v* release) | glowny (main branch – beta)
+  dziel_sie_ulepszeniami: false    # reporting generalised fleet improvements to the template publisher (scripts/propozycje.py); OFF by default – sent content is licensed under Apache-2.0 (section 5 of the licence): README, "Sharing improvements"
+  skrzynka_propozycji: ""          # private inbox repo (OWNER/repo); empty = the template repository, which is public
+  dziel_sie_decyzja: ""            # id of the owner's decision (D-…) to share; required when sending to the shared template repository
+
+ludzie:
+  # Owner: sets the mandate, budget and boundaries (zasady.md, uprawnienia.yaml). Rarely, once a week.
+  wlasciciel:
+    rola: "Właściciel"
+    kontakt_firmowy: "wlasciciel@example.com"     # never a private address or phone (zasady.md item 9)
+  # Operator: the "human interface". Reports to the CEO agent and does only what the agent cannot do
+  # (signature, KYC, logging in, payment, contact requiring a human). May be the same person as the owner.
+  operator:
+    rola: "Operator"
+    kontakt_firmowy: "operator@example.com"
+    sla_godziny: 24                                # response time for a task in operator/kolejka.md
+
+mandat:
+  cel: "Rentowny wzrost: EBITDA i przepływy pieniężne właściciela"   # CEO's overriding goal (ceo/kpi/kpi.md O1)
+  budzet_miesieczny_pln: 0                         # hard spending limit without the owner's approval
+  prog_zgody_pln: 0                                # single expense above the threshold → for decision
+  budzet_floty_usd_miesiac: 300                    # only runtime.rozliczenie = api: monthly fleet cost ceiling (tokens) – 80 % warning, 100 % HALT (watchdog)
+
+runtime:
+  # Where agent runs execute (report, chapter 6). Default: cloud, laptop only for GUI.
+  # claude-routines – Claude Code cloud tasks (instructions: python3 flota/generuj.py --routines);
+  # desktop-scheduled – tasks in the Claude app on a Mac (generuj.py --lista); agent-sdk – own server, cron → scripts/przebieg-headless.sh
+  glowny: "claude-routines"        # claude-routines | desktop-scheduled | agent-sdk
+  # Fleet billing – only variants that are permitted under our reading of Anthropic's terms as of 10 November 2026 (ceo/handoff/konto-floty.md;
+  # you are responsible for compliance with the current terms). NO account rotation: on the Team plan
+  # each seat belongs to one named person, and limits must not be transferred or shared; consumer plans (Pro/Max/Ultra)
+  # are for non-commercial use only.
+  #   team – the whole fleet on ONE Team plan seat (operator, premium seat) + the organisation's paid overage (usage credits)
+  #          at API rates, with a spending limit set at Anthropic; manifest budgets are weights scaled to capacity;
+  #   api  – API key (Agent SDK with its own scheduler) or usage-billed Enterprise: USD budgets and a ceiling with HALT.
+  # The cost of every run is measured by scripts/koszt.py (tokens from the session transcript × flota/ceny-modeli.yaml) – report: koszt.py raport.
+  rozliczenie: "team"              # team | api
+  konto: "A"                       # fleet account letter: tasks <prefiks>-<agent>-a, limit file ~/.<prefiks>-limit-A.json
+  pojemnosc_miejsca_usd_miesiac: null  # team: API equivalent of the fleet seat limit – fill in after measuring (koszt.py raport --dni 14);
+                                   # null = budgets are the amounts from the manifest (safe start)
+  nadwyzka_usd_miesiac: 0          # team: paid overage (usage credits) – set the same spending limit at Anthropic
+  wykorzystanie_cel_proc: 95       # share of capacity distributed among agents; the rest = reserve for urgent work
+  cena_planu_usd_miesiac: 250      # team: plan seats (e.g. 2 × premium at 125 USD/month: operator and owner) – fixed cost in the model
+  # Model classes – the ONLY place with model identifiers. The fleet manifest (flota/zadania.yaml) gives the class, not the model.
+  # New model = change one line here + python3 flota/generuj.py + change the tasks on the fleet account (process 55 § 5,
+  # control F-13, list Z7: evals first). With team billing the "lekki" class is the knob for limit utilisation (F-04).
+  modele:
+    sedzia: "claude-fable-5-2"     # reviewer: strongest model and a different family than the PR authors
+    mocny: "claude-opus-5-5"       # decisions, code, legal and financial documents, plans – most roles
+    lekki: "claude-sonnet-5-5"     # frequent roles constrained by policy (reception, support); with spare limit → a mocny-class model
+    mechaniczny: "claude-haiku-5-5"  # closed list of actions without judgement (limit, scalanie)
+  modele_sprawdzono: "2026-11-10"  # date of the last review of classes against new releases (F-13: no older than 35 days)
+  okno_celu_h: 168                 # rate regulator: the fleet account's weekly limit used evenly across the whole week
+
+straznik:
+  # Fleet watchdog (moduly/straznik) – active checks. Core: przebiegi, pr, zlecenia, konfiguracja.
+  # Plugins (need their own sources): testflight (App Store Connect), automaty (Supabase cron, Codemagic, Fly, Pages).
+  kontrole: [przebiegi, pr, zlecenia, konfiguracja, budzety, martwe]
+  # Optional: regular expression of PR titles skipped by the "pr" check (drafts are always skipped). Default none –
+  # nothing is skipped. The STRAZNIK_POMIN_TYTUL variable takes precedence. Other options: moduly/straznik/README.md.
+  # pomin_tytul: '^\[wstrzymane'
+  # Where it runs: "actions" (.github/workflows/straznik.yml, every 15 min, no laptop) or "launchd" (moduly/straznik/instaluj.sh).
+  uruchamianie: "actions"
