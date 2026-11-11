@@ -10,7 +10,7 @@
       "name": "company-of-agents",
       "source": "./plugins/company-of-agents",
       "description": "Agentic organisation: skills for running a fleet of Claude Code agents like a company – new organisation, run contract, PM watch, review, incident.",
-      "version": "0.1.3",
+      "version": "0.1.4",
       "license": "Apache-2.0"
     }
   ]
