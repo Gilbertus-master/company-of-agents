@@ -8,6 +8,17 @@ Thank you for improving the core. Two ways to contribute:
    licence and carries a statement of the owner's consent and of compliance with the Developer Certificate of Origin 1.1.
 2. **By hand.** Open an Issue (template "Improvement proposal") or a pull request.
 
+## How to send feedback and discoveries to the publisher
+The channel is this public repository. Three ways, simplest first:
+1. **An issue** – templates "Improvement proposal", "Exchange – discovery", "Register your project".
+2. **A process 16 record** with one command: `python3 -I scripts/wymiana.py wyslij <rekord.json> --zakazane "<names of companies, clients>"` –
+   by default to the publisher repo of this edition, after a deliberate choice (`repo.dziel_sie_ulepszeniami: true` or `--publicznie`); no permissions in the publisher repo
+   needed – its workflow `wymiana-etykiety.yml` sets the labels.
+3. **A pull request** with a DCO sign-off (rules below).
+
+Issues are **public** and pass a data gate; do not paste client data, secrets or company names. We ask everyone who uses the
+code to file "Register your project" (joining as a contributor) – a collaboration rule, not a licence condition.
+
 ## Rules
 - **Licence.** Contributions are accepted under Apache-2.0, the licence of this repository (section 5 of the licence), with
   no additional terms.

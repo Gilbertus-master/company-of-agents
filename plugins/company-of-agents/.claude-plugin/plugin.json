@@ -1,6 +1,6 @@
 {
   "name": "company-of-agents",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "Agentic organisation: skills for running a fleet of Claude Code agents like a company – new organisation, run contract, PM watch, review, incident.",
   "author": {
     "name": "Sebastian Jablonski",

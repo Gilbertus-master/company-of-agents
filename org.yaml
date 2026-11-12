@@ -16,6 +16,7 @@ repo:
   produkt: []                                    # product code repositories, e.g. ["OWNER/nowa-firma-app"]
   szablon: "Gilbertus-master/company-of-agents"        # template upstream (OWNER/repo or full URL) – scripts/aktualizuj-z-szablonu.sh, procesy/05
   szablon_kanal: "stabilny"         # template updates: stabilny (latest v* release) | glowny (main branch – beta)
+  szablon_baza: ""                 # optional: SHA or tag of the template version the company started from (scripts/propozycje.py → baza)
   dziel_sie_ulepszeniami: false    # reporting generalised fleet improvements to the template publisher (scripts/propozycje.py); OFF by default – sent content is licensed under Apache-2.0 (section 5 of the licence): README, "Sharing improvements"
   skrzynka_propozycji: ""          # private inbox repo (OWNER/repo); empty = the template repository, which is public
   dziel_sie_decyzja: ""            # id of the owner's decision (D-…) to share; required when sending to the shared template repository
@@ -78,3 +79,7 @@ straznik:
   # pomin_tytul: '^\[wstrzymane'
   # Where it runs: "actions" (.github/workflows/straznik.yml, every 15 min, no laptop) or "launchd" (moduly/straznik/instaluj.sh).
   uruchamianie: "actions"
+  # Alert recipients (moduly/straznik/README.md, "Recipients and escalation"): by default pr → recenzent, zlecenia → the order's
+  # addressee, przebiegi/martwe → the agent, the rest → ceo; the CEO gets a copy at the 2nd reminder, the owner – when the CEO is
+  # stalled or the budget is running out. Override: {kontrola: adresat} or {kontrola: {adresat: …, reakcja_min: …}}.
+  # adresaci: {pr: recenzent}

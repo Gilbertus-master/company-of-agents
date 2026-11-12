@@ -44,6 +44,8 @@ Script: `scripts/aktualizuj-z-szablonu.sh [--sucho] [--url …] [--galaz main]` 
 **Rhythm:** once a month (the first `PEŁNY` (full) CEO run after the agent review – process 50) or on an event, when the template announces a
 security fix (hook, watchdog). Done by the company's CEO in a PR or by the operator; the update is not an external action, merging the PR is
 (`pr_scalenie_bez_migracji`).
+After every update (and at least once a week) the company's CEO measures how closely the skeleton matches with `python3 -I scripts/zgodnosc.py`
+and sends a `zgodnosc` record (procesy/16-wymiana-ceo.md, section 6); a permanent deviation = an entry in `.szablon-lokalne` with the reason in a comment.
 
 ### What may be overridden locally and what flows from the template
 
@@ -53,7 +55,7 @@ security fix (hook, watchdog). Done by the company's CEO in a PR or by the opera
 | `.claude/` (permissions hook, skills, settings), `moduly/straznik/`, `scripts/`, `flota/generuj.py`, `flota/szablony/`, tests | `polityki/`, `decyzje/`, `decyzje.md`, `ryzyka.md` (company content), `backlog.md`, `rejestr-sesji.md` |
 | `role/*.md`, `role/szablony/`, `procesy/`, `docs/`, `toolbelt/*.md` (catalogue, rules), `ewaluacje/_startowe/`, `ewaluacje/*.py` | `koordynacja-odstepy.tsv`, `flota/zadania.yaml`, `flota/etykiety.tsv`, `ceo/handoff/prompty/`, `ceo/handoff/routines/` (generated) |
 | `pm/specyfikacje/`, `pm/narzedzia/`, `ceo/kpi/kpi.md` (F1–F12 skeleton – the company adds its own O/K/A in separate sections; conflict possible) | agent directories: `*/agent.md`, `*/dziennik.md`, `*/stan.json`, `*/backlog.md`, `*/wiedza/`, `*/analizy/`, `*/szkice/`, role registers |
-| `README.md`, `PRZECZYTAJ-NAJPIERW.md`, `CLAUDE.md` | `zlecenia/`, `przebiegi/`, `incydenty/`, `bezpieczenstwo/audyt/`, `bezpieczenstwo/blokady.jsonl`, `bezpieczenstwo/rejestr-ai.md`, `toolbelt/mcp-odciski.tsv`, `ewaluacje/<agent>/`, `operator/kolejka.md`, `ceo/do-decyzji.md`, `ceo/plan/`, `ceo/straznik-zdarzenia.md` |
+| `README.md`, `PRZECZYTAJ-NAJPIERW.md`, `CLAUDE.md` | `zlecenia/`, `przebiegi/`, `incydenty/`, `bezpieczenstwo/audyt/`, `bezpieczenstwo/blokady.jsonl`, `bezpieczenstwo/rejestr-ai.md`, `toolbelt/mcp-odciski.tsv`, `ewaluacje/<agent>/`, `operator/kolejka.md`, `ceo/do-decyzji.md`, `ceo/plan/`, `ceo/straznik-zdarzenia.md`, `ceo/scalanie/stan.json`, `ceo/scalanie/dziennik.jsonl`, `ceo/kontrole/wyniki.jsonl`, `recenzent/szablony/`, `.github/workflows/straznik.yml` (`init-org.sh` turns on its schedule) |
 
 A company may add a path to `.szablon-lokalne` (e.g. its own process `procesy/45-…` – it does not collide anyway) or remove one (e.g. it wants
 to take `uprawnienia.yaml` from the template) – that is a decision of the company's CEO recorded in the log. Changing `role/<rola>.md` locally is allowed,

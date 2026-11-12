@@ -43,6 +43,11 @@ Full task text: `flota/szablony/tresc/scalanie.md` → `ceo/handoff/prompty/scal
 | no movement | `CZEKA_NA_RODZICA`, `ZALEZNOSC`, `CI_TRWA`, `NIE_SCALAC`, `WSTRZYMANY`, `SZKIC`, `SWIEZY`, `CZEKA_NA_GLOWNA`, `NIEZNANY` | nobody – waits for an event |
 
 The order of checks is fixed and starts with the strictest: PR state → verdict → base → conflict → CI → files → migrations → labels.
+
+**CI = the latest run of each check.** `statusCheckRollup` contains every run of a check on the head, including red ones from
+before a re-run; for each key (workflow, check name or status context) the queue takes only the run with the latest start
+time (an unfinished one – `0001-01-01` – counts as the newest). A tie in time, or no time with several runs = the worst result
+(red). A re-run that turns CI green therefore clears `CI_CZERWONE` without an empty commit.
 A CEO hold overrides every class. The table ends with the line `REZERWA_CEO: TAK|NIE – <powód>`.
 
 ## Reviewer verdict – machine fields
@@ -54,7 +59,7 @@ A CEO hold overrides every class. The table ends with the line `REZERWA_CEO: TAK
 | `sha` | the commit the verdict applies to (at least 7 characters) |
 | `wynik` | `OK` / `POPRAWKI` / … – prose for humans |
 | `scalenie` | `tak` · `nie` · `warunek` – **without this field the PR will not be merged** (`NIEJASNY`) |
-| `warunki` | list of conditions, when `scalenie: warunek` |
+| `warunki` | list of conditions, when `scalenie: warunek`; machine forms (the whole condition, nothing added): `po #N` / `po <nazwa-repo>#N` (the queue waits until that PR is merged) and `zielony <check> na head` (a name with spaces in \`…\`, e.g. \`Testy / e2e\`; met when the **latest** run of that check on the current head is `SUCCESS` – then no CEO needed; absent, skipped or red = `WARUNEK`). Any other condition goes to the CEO |
 | `kroki` | actions after the merge (performed by the CEO or the relevant agent, not the merge agent) |
 | `klasa_migracji` | `{"<plik migracji>": "A" \| "B"}` – every migration in the PR; no class = treated as class B |
 | `kiedy` | `RRRR-MM-DD GG:MM` – time to merge is counted from this moment |

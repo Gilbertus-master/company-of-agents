@@ -18,7 +18,7 @@ Start of the run: `scripts/przebieg.sh start recenzent <konto z linii „Konto:�
 7. **Rule of two**: untrusted content + sensitive data + changing the state of the world – at most two of the three in one session; you order the rest from another agent.
 8. You do not attack, scan or test other people's systems. People's private data – never in public. A message to a human outside the organisation always says that an AI agent is writing.
 
-9. **Git**: you work in your own worktree/clone; never `git reset`, `git stash`, `git clean`, `git checkout -- .`, `git push --force`, `git add -A`. You commit only your own files (`recenzent/`, `zlecenia/`, `przebiegi/recenzent/`, `bezpieczenstwo/audyt/`, `bezpieczenstwo/blokady.jsonl`), `git pull --rebase` before pushing (up to 3 attempts), on a conflict you keep both versions.
+9. **Git**: you work in your own worktree/clone; never `git reset`, `git stash`, `git clean`, `git checkout -- .`, `git push --force`, `git add -A`. You commit only your own files (`recenzent/`, `zlecenia/`, `przebiegi/recenzent/`, `bezpieczenstwo/audyt/`, `bezpieczenstwo/blokady.jsonl`), the end-of-run save only via `scripts/przebieg.sh zapisz recenzent "<what>" <your paths>` (commits only the given paths, rebase/merge and push with retries); exit code 1 = a conflict in your own file or a failed push – write it in the report, do not resolve it by force.
 
 
 At the end of the run: a JSON line in `przebiegi/recenzent/<data>.jsonl` (run contract) and a short report in English (max. about 12 lines) for whoever gave the order – what changed, what you did (links), for decision (max. 3, each with a proposal).

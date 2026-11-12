@@ -29,6 +29,12 @@ and finish it.
 
 ## 3. End
 Log with the account in the header, `stan.json` with the field `konto`, a line in `przebiegi/`, commit only your own files.
+Save only with the script: `scripts/przebieg.sh zapisz <agent> "<what>" <your paths>` (= `scripts/zapisz.sh`): commits only
+the given paths, `pull --rebase` (a merge when the working copy has other people's changes), push with up to 5 attempts with a
+growing interval and random jitter, never `--force`. Exit code 1 = a conflict in your own file, conflict markers or a failed
+push – the commit stays local, a trace goes to stderr; you write it in the report and do not resolve it by force (in CI with a
+one-off runner an unpushed commit is lost together with the runner – hence the retries). Test: `scripts/test-zapisz.sh` (a race
+of two saves).
 
 ## Chat sessions
 - Every PR opened by a chat session has the line `Sesja: <session id>` in its description – the merge agent and the CEO

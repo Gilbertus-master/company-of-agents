@@ -12,6 +12,8 @@ Two humans stay in the loop: the **owner** (decisions) and the **operator** (acc
 > into a better solution. We require everyone who uses it to send improvements to the mechanisms back here: with
 > `--dziel-sie tak` when setting up the company, or with a pull request. This is a rule of cooperation in this project, not
 > a licence condition – Apache-2.0 does not enforce it. What exactly leaves your repository: section "Sharing improvements".
+> We also ask everyone who uses the code to file "Register your project" – section "How to send feedback and discoveries
+> to the publisher".
 
 > **Status.** Extracted from a private template that runs a real fleet. The core passes its own test suite
 > (`bash scripts/testy.sh`, no network, no LLM). It has not yet been run end-to-end by anyone outside the authors –
@@ -39,6 +41,8 @@ Two humans stay in the loop: the **owner** (decisions) and the **operator** (acc
 | Cost measurement – tokens × price list per run, with a monthly projection | `scripts/koszt.py` |
 | Role evals, including adversarial scenarios | `ewaluacje/` |
 | Template updates as a weekly pull request, and improvement proposals back to this repository | `scripts/aktualizuj-z-szablonu.sh`, `scripts/propozycje.py` |
+| Exchange of discoveries and releases between project CEOs and the template publisher (one record = one issue), and measuring how closely the skeleton matches the template | `procesy/16-wymiana-ceo.md`, `scripts/wymiana.py`, `scripts/odkrycia.py`, `scripts/zgodnosc.py` |
+| Personal-data scanner for the repo, sensitive registers without data in git, a hash gate for the security rules | `scripts/skan-danych.py`, `scripts/rejestry-git.py`, `scripts/zasady_skroty.py` |
 | A minimal start: five scheduled tasks (`limit`, `scalanie`, `ceo`, `recenzent`, `pm`); `architekt` – weekly updates and proposals – is added next | `flota/zadania.yaml` |
 
 Not in the core (part of the full template): the library of further roles, managerial controls and KPIs, the profitability
@@ -87,6 +91,27 @@ The core skills also ship as a plugin (`plugins/`, described in `plugins/<name>/
 where `<name>` is the name of this repository. The `new-organisation` skill creates the company repo and walks you through the first start-up.
 The plugin ships no hooks or permissions – the fleet's safeguards work inside the company repo.
 
+## How to send feedback and discoveries to the publisher
+The channel for feedback and discoveries is **this repository** – issues and pull requests. Three ways, simplest first:
+
+1. **An issue in this repository** – templates: "Improvement proposal", "Exchange – discovery" and "Register your project".
+2. **A process 16 record with one command** from your company repo: `python3 -I scripts/wymiana.py wyslij <rekord.json> --zakazane "<names of companies, clients>"`
+   (record: `wymiana.py wzor odkrycie`, description: `procesy/16-wymiana-ceo.md`). The default target is the publisher repo of
+   this edition (`org.yaml → repo.szablon`), but the tool sends only after a deliberate choice: `repo.dziel_sie_ulepszeniami: true`
+   (`scripts/init-org.sh --dziel-sie tak`) or `--publicznie` on the command. Without it, it exits with code 3 and nothing is sent;
+   preview: `--na-sucho`. You need no permissions in the publisher repo: if it does not accept the labels, the tool sends the
+   issue without them, and the publisher's workflow `wymiana-etykiety.yml` sets the labels (or `poza-schematem` with a reason).
+3. **A proposed change** – a pull request with a DCO sign-off (`git commit -s`), rules: `CONTRIBUTING.md`.
+
+**Issues are PUBLIC** – anyone can see them, together with the name of the GitHub account they came from. Process 16 records
+and proposals from `scripts/propozycje.py` pass a data gate (e-mail addresses, phone numbers, PESEL, NIP, IBAN, secrets, names
+from `--zakazane`), but the gate works on patterns: do not paste client data, secrets or company names.
+
+**Register your project.** We ask everyone who uses this code to join as a contributor: the "Register your project" issue
+(project short name, template version, language, whether you want to receive releases). This is a collaboration rule of this
+project, not a condition of the licence – Apache-2.0 does not enforce it. The final message of `scripts/init-org.sh` reminds
+you of it too.
+
 ## Sharing improvements – the owner's explicit choice
 The project is open so that it can be developed together: we require the fleets that use it to give their improvements
 back – choose `--dziel-sie tak`. Technically, nothing leaves until the company's owner deliberately enables it.
@@ -106,11 +131,41 @@ not been run yet – nothing leaves your repository.
 | **Preview** | `python3 -I scripts/propozycje.py zbierz` shows what would be sent; `propozycje/wyslane.jsonl` records what was. |
 | **Turning it off** | `org.yaml` → `repo.dziel_sie_ulepszeniami: false`. Nothing is sent after that; what has already been published stays public. |
 
-There is no other telemetry.
+There is no other telemetry. Process 16 records (`scripts/wymiana.py`) go to this repository only after the same deliberate
+choice or with `--publicznie` – see "How to send feedback and discoveries to the publisher".
 
 ## Updates
 Every Monday the architect agent runs `scripts/aktualizuj-z-szablonu.sh --pr`: the latest release arrives as a pull request
 that goes through the reviewer and the merge queue. Changes to `zasady.md` and `.claude/` wait for the owner's decision.
+
+## Changes
+**0.2.0 (12.11.2026)**
+- Process 16 – exchange of discoveries and releases between project CEOs and the template publisher: `scripts/wymiana.py` (one
+  record = one issue, one JSON schema, a data gate before sending), `scripts/odkrycia.py` (discovery drafts from the mechanism
+  commits of the project's own repo), `scripts/zgodnosc.py` (skeleton conformance with the template by paths and hashes, without
+  git history), issue templates, a labelling workflow on the publisher's side (`wymiana-etykiety.yml`; sending needs no permissions in the
+  publisher repo). In this edition the channel is the publisher's public repo; sending requires a deliberate choice
+  (`--dziel-sie tak` or `--publicznie`).
+- Personal-data scanner `scripts/skan-danych.py` (PESEL, NIP, IBAN, documents with a check digit, e-mail addresses outside the
+  company domain, phone numbers; exceptions by SHA-256; `--staged` before a commit) and `scripts/rejestry-git.py` (sensitive
+  registers in git with headers only).
+- Rules hash gate `scripts/zasady_skroty.py`: section A of `zasady.md` and the rules block in task texts cannot change or
+  disappear without the owner's decision; the rules block is now also in the `limit` and `scalanie` task texts.
+- `scripts/zapisz.sh` (`scripts/przebieg.sh zapisz`): end-of-run save – commits only the given paths, rebase or merge, push with
+  retries and jitter, never `--force`; a test of two racing saves.
+- Merge queue: CI from the latest run of each check; the machine condition `zielony <check> na head`; the PR author is notified
+  of the verdict once per SHA.
+- Watchdog: alerts go to the check's addressee (`zlecenia/<adresat>.md`), escalation to the CEO and the owner, an alarm register
+  (`moduly/straznik/eskalacja.py`); alert e-mail addresses only in the launchd plist.
+- Permissions hook: credit notes and refunds through the payment operator's MCP under the same amount threshold; denial when a
+  command contains more than one refund.
+- Local paths for template updates (merge-queue state, eval results, reviewer templates, watchdog workflow), `merge=union` for
+  every append-only log, a test that no tracked file contains conflict markers.
+- A feedback and discovery channel in the publisher's public repo (section "How to send feedback and discoveries to the
+  publisher") and the "Register your project" issue template; the final message of `scripts/init-org.sh` asks for it too.
+- `scripts/propozycje.py`: the change base = the latest version shared with the template (`repo.szablon_baza`);
+  `scripts/koszt.py`: model prices as of 11.11.2026 and price tiers for long prompts; `ceo/do-decyzji.md` – the only place for
+  the owner's decisions.
 
 ## Licence and contributing
 Apache-2.0 (`LICENSE`, `NOTICE`). Contributions: `CONTRIBUTING.md` (DCO sign-off, no CLA). Vulnerabilities: `SECURITY.md`.

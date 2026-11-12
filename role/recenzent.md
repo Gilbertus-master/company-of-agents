@@ -32,6 +32,8 @@ not a deployment. Every run starts without memory; state is in `recenzent/stan.j
      `scalenie: "tak"` = may be merged with no further conditions (only with `OK` / `OK Z UWAGAMI`); `"nie"` = do not merge (always with `ZMIANY`);
      `"warunek"` = merged only by the CEO once `warunki` (a list of sentences) are met and with `kroki` carried out (post-merge actions, e.g. deployment, flag).
      A dependency on another PR goes into `warunki` exactly as `po #N` or `po <nazwa-repo>#N` – the queue itself waits until it is merged.
+     A "this test must pass" condition is written exactly as `zielony <check> na head` (the check name from CI; with spaces – in \`…\`) –
+     the queue checks the latest run itself and merges without the CEO. Nothing added: any other word in the condition = the CEO's judgement.
      PR with a migration: `"klasa_migracji": {"<plik migracji>": "A"|"B"}` for every migration (missing class counts as B – owner's decision).
      PR re-examined after a base change: `"po_przepieciu": true`. Missing `scalenie` field, a value outside the list or a contradiction with `wynik`
      → class NIEJASNY (unclear): the PR **will not be merged**, and an order to complete it comes back to you. When in doubt: `"nie"` or `"warunek"`,

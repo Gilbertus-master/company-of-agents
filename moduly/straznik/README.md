@@ -6,7 +6,7 @@ did not start in its window, a PR is waiting for a verdict, an order passed its 
 out, runs keep ending in an error.
 
 The watchdog does not judge the quality of work and fixes nothing. It reports – to the operator by e-mail and
-notification, to the CEO agent with a `Pilne` (urgent) entry in `zlecenia/ceo.md` – and in two cases it pulls the brake:
+notification, with a `Pilne` (urgent) entry in the inbox of the check's addressee (`zlecenia/<adresat>.md`; the CEO only at the 2nd reminder) – and in two cases it pulls the brake:
 it pauses an agent after a series of errors and stops the fleet when the organisation budget is exhausted. Why a script
 and not another agent: `docs/adr/0003-straznik-bez-llm.md`.
 
@@ -20,7 +20,7 @@ Paths in this document are relative to the root directory of the organisation re
 | Cadence | every 15 min – GitHub Actions (recommended) or launchd on a Mac |
 | Configuration | `org.yaml` in the organisation repo; `STRAZNIK_…` environment variables take precedence |
 | Requirements | Python 3.9+ (standard library only, no pip), `git`, `gh` |
-| Alert channels | e-mail (Resend), macOS notification (launchd only), a `Pilne` entry in `zlecenia/ceo.md` |
+| Alert channels | e-mail (Resend), macOS notification (launchd only), a `Pilne` entry in `zlecenia/<adresat>.md` (recipient table, escalation to the CEO and the owner) |
 | Secrets | environment variables (CI) or the macOS keychain; never in files, logs or error messages |
 
 ### Module files
@@ -30,9 +30,10 @@ Paths in this document are relative to the root directory of the organisation re
 | `straznik.py` | one run: clone update, configuration, checks, alerts, state write, commit of its own files |
 | `zrodla.py` | data fetching (repo files, `git`, `gh`, plugin sources), reading `org.yaml`, secrets |
 | `kontrole.py` | checks as pure functions `(dane, teraz) -> wynik` – no network and no writes |
-| `alerty.py` | alert rules, mutes, e-mail body, notification, entry in `zlecenia/ceo.md` |
+| `alerty.py` | alert rules, mutes, e-mail body, notification, `Pilne` entry in the addressee's inbox |
+| `eskalacja.py` | alert recipients (table check → addressee, escalation to the CEO and the owner) and the core of the alarm register |
 | `instaluj.sh`, `straznik.plist.szablon` | installing and uninstalling the launchd agent (macOS) |
-| `test_straznik.py`, `testdane/` | tests and fictitious sample data (no network) |
+| `test_straznik.py`, `test_eskalacja.py`, `testdane/` | tests and fictitious sample data (no network) |
 
 ### Requirements
 
@@ -67,7 +68,7 @@ Permanent set-up is described in the "Running" section.
 3. **Sources** – repo files are read locally, network sources (`git ls-remote`, `gh`, plugin sources) are fetched
    in parallel. A source that did not respond does not abort the run – its check gets a source-error status.
 4. **Checks** – each active check is computed separately; an exception in one does not stop the others.
-5. **Alerts** – comparison with the previous state (`ceo/straznik.json`) and with mutes from `zlecenia/ceo.md`; an alert
+5. **Alerts** – comparison with the previous state (`ceo/straznik.json`) and with mutes from the inboxes `zlecenia/*.md`; an alert
    only when something has changed or a reminder is due.
 6. **Effects** – e-mail, notification, `Pilne` entry, circuit breakers (dead-letter, `HALT`), lines in the event log.
 7. **Write** – commit and push of the watchdog's own files only, new state in `ceo/straznik.json`, one summary
@@ -82,7 +83,9 @@ The watchdog reads `org.yaml` from the repo it checks. Keys it uses:
 | `organizacja.prefiks` | prefix of scheduled task names `<prefiks>-<agent>-<konto>` (check `konfiguracja`) | `org` |
 | `organizacja.strefa` | time zone: schedule windows, order deadlines, night-time quiet hours, dates in events and entries | `Europe/Warsaw` (also for an unknown zone name) |
 | `organizacja.domena` | sender of alert e-mails: `Strażnik floty <straznik@<domena z org.yaml>>` | `alerty@example.com` – set the domain or `STRAZNIK_MAIL_OD` |
-| `ludzie.operator.kontakt_firmowy` | recipient of alert e-mails | `ceo@example.com` – set the address or `STRAZNIK_MAIL_DO` |
+| `ludzie.operator.kontakt_firmowy` | copy of the alert e-mail from the CEO level up (the operator reports to the CEO) | no operator (founder's fleet) – no copy |
+| `ludzie.wlasciciel.kontakt_firmowy` | alert e-mail at the owner level (the CEO is stalled, budget, a CEO alarm after the 2nd reminder) | no e-mail – the alarm stays in the `alarmy` register and in the events |
+| `straznik.adresaci` | override of the recipient table: `{kontrola: adresat}` or `{kontrola: {adresat, reakcja_min}}` (section "Recipients and escalation") | default table |
 | `repo.github` | `<właściciel>/<repo organizacji>`: owner of all repos on GitHub and the organisation repo in the `pr` check | placeholder names – the `pr` check will report a source error |
 | `repo.produkt` | product repo – a list `[właściciel/nazwa, …]` or a single name. The `pr` check covers all of them and the organisation repo; the first in the list is the repo whose verdicts have a key without a prefix | only the organisation repo is checked |
 | `runtime.glowny` | `desktop-scheduled` = the fleet runs as scheduled tasks of the desktop app; with any other value the `konfiguracja` check is skipped | `desktop-scheduled` |
@@ -137,7 +140,7 @@ Notes:
 | `<agent>/agent.md` | `przebiegi` | sign that the role is live; an agent from the schedule without this file is not checked |
 | `<agent>/stan.json` → `ostatni_przebieg` | `przebiegi` | missing file = note, not a discrepancy |
 | `recenzent/stan.json` → `recenzje` | `pr` | the file must exist (`{}` is enough); without it the check reports a source error – create the file or remove `pr` from `straznik.kontrole` |
-| `zlecenia/*.md` | `zlecenia` | entry format: `zlecenia/README.md`; the watchdog reads alert mutes from `zlecenia/ceo.md` |
+| `zlecenia/*.md` | `zlecenia` | entry format: `zlecenia/README.md`; the watchdog reads alert mutes from the replies to its entries in every inbox |
 | `przebiegi/<agent>/*.jsonl` | `budzety`, `martwe` | run contract lines (`pm/specyfikacje/kontrakt-przebiegu.md`) and cost files |
 | `flota/zadania.yaml` | `budzety` | monthly agent limits (`budzet_usd_miesiac`) |
 | scheduled task directory (outside the repo) | `konfiguracja` | by default `~/.claude/scheduled-tasks`; only with `runtime.glowny: desktop-scheduled` |
@@ -331,7 +334,7 @@ not seen for 3 days are removed from the state.
 
 ### Muting
 
-A known discrepancy is muted in the **reply** to the watchdog's entry in `zlecenia/ceo.md`, with the line:
+A known discrepancy is muted in the **reply** to the watchdog's entry (in `zlecenia/<adresat>.md`), with the line:
 
 ```
 Wycisz do: RRRR-MM-DD[ GG:MM][ (ID, ID)]
@@ -343,17 +346,46 @@ Wycisz do: RRRR-MM-DD[ GG:MM][ (ID, ID)]
   raised, and the event log gets the line "bez alertu – wszystkie ID wyciszone" (no alert – all IDs muted).
 - The line works regardless of the entry's status (also after it is closed), until the date passes.
 
+### Recipients and escalation
+
+An alert goes to whoever can remove the cause – not to everyone at once (`eskalacja.py`):
+
+| Check | Addressee (`Pilne` entry in `zlecenia/<adresat>.md`) | Response time |
+|---|---|---|
+| `pr` | `recenzent` | 60 min |
+| `zlecenia` | the addressee of the overdue order (the inbox it sits in) | 120 min |
+| `przebiegi`, `martwe` | the agent from the discrepancy ID | 120 min |
+| `konfiguracja`, `testflight`, `automaty`, `klon` | `ceo` | 240 / 240 / 120 / 120 min |
+| `budzety` | `ceo` + the owner immediately | 60 min |
+| source error (any check) | `ceo` | as the check |
+
+- **A copy to the CEO only at the 2nd reminder** (alert no. 3 for the same set of IDs, i.e. after 2 h and another 6 h) – unless
+  the alarm has been **taken up**: the watchdog's entry has the status "w toku" (in progress) or anything in the `Odpowiedź:` field.
+- **The owner** (e-mail to `ludzie.wlasciciel.kontakt_firmowy`): when the CEO itself is stalled (`ceo` in the ID of the `przebiegi`
+  or `martwe` check), when the budget is running out (`budzety`) and when an alarm whose addressee was already the CEO reaches
+  its 2nd reminder. The operator (if there is one) gets a copy of the e-mail from the CEO level up. The addressee level sends
+  no e-mails – the inbox entry is enough.
+- The table is overridden by `org.yaml → straznik.adresaci` (addressee: `recenzent`, `agent`, `adresat_zlecenia`, `ceo`, `wlasciciel`
+  or an agent name).
+- **Alarm register** (`ceo/straznik.json → alarmy`, core): one entry per check – `odpowiedzialny` (responsible), `reakcja_min`,
+  `od`, `termin`, `stan` (`otwarty` / `podjety` / `zamkniety` – open / taken up / closed), escalation `poziom` (level), `po_terminie`
+  (overdue), and after closing `zamkniety_od` and `czas_usuniecia_min` (time to resolve). An alarm that returns within 30 min of
+  closing is the same event (the time keeps running); closed ones disappear after 3 days. A full register of types with
+  escalation thresholds and MTTR is a separate change.
+- "Wycisz do:" works in the reply to the watchdog's entry in every inbox.
+
 ### Channels
 
-1. **E-mail** via Resend. Sender: `straznik@<domena z org.yaml>` (or `STRAZNIK_MAIL_OD`), recipient:
-   `ludzie.operator.kontakt_firmowy` (or `STRAZNIK_MAIL_DO`). Subject: `[STRAŻNIK] <kontrola>: <krótko>`. Body: status,
+1. **E-mail** via Resend – only from the CEO level up (section above). Sender: `straznik@<domena z org.yaml>` (or
+   `STRAZNIK_MAIL_OD`), recipients: the owner (`ludzie.wlasciciel.kontakt_firmowy` / `STRAZNIK_MAIL_WLASCICIEL`) and the operator
+   (`ludzie.operator.kontakt_firmowy` / `STRAZNIK_MAIL_DO`). Subject: `[STRAŻNIK] <kontrola>: <krótko>`. Body: status,
    counts, IDs (at most 30, then "… i N więcej" (and N more)), description and notes – no personal data and no secrets.
    Without a Resend key the run carries on, and the state and events record "mail pominięty – brak klucza Resend"
    (e-mail skipped – no Resend key).
 2. **macOS notification** "Strażnik floty" – only where `osascript` is available, i.e. when run via launchd.
    During **night-time quiet hours 23:00–7:00** (organisation time zone) the notification is skipped; the e-mail and the
    `Pilne` entry are created as usual.
-3. **`Pilne` entry** in `zlecenia/ceo.md`:
+3. **`Pilne` entry** in the inbox of each addressee, `zlecenia/<adresat>.md` (line "Adresaci alertu: …" (alert recipients)):
 
    ```
    ## [otwarte] RRRR-MM-DD · od: straznik · Pilne (strażnik) · <kontrola>: <krótko>
@@ -373,9 +405,9 @@ Wycisz do: RRRR-MM-DD[ GG:MM][ (ID, ID)]
 
 | File | Contents | In the repo? |
 |---|---|---|
-| `ceo/straznik.json` | full state of the last run: `czas`, `czas_przebiegu_s`, `kontrole`, `alerty`, `bledy_zrodel`, `alert_zrodel`, `aktywne_id`, `wyciszenia`, `ostatni_commit_zdarzen`, `mail`, `alerty_przebiegu`, `uwagi` | no – in `.gitignore`; in GitHub Actions carried between runs in the cache |
+| `ceo/straznik.json` | full state of the last run: `czas`, `czas_przebiegu_s`, `kontrole`, `alerty`, `bledy_zrodel`, `alert_zrodel`, `aktywne_id`, `wyciszenia`, `ostatni_commit_zdarzen`, `mail`, `alerty_przebiegu` (with addressees and level), `alarmy` (register), `uwagi` | no – in `.gitignore`; in GitHub Actions carried between runs in the cache |
 | `ceo/straznik-zdarzenia.md` | log: a line only on a change of a check's status or ID set, on an alert and when a circuit breaker trips; newest at the bottom | yes – committed at most once an hour, and immediately on an alert |
-| `zlecenia/ceo.md` | `Pilne` entries for the CEO agent | yes – committed immediately |
+| `zlecenia/<adresat>.md` | `Pilne` entries for the alert addressees (reviewer, agent, CEO) | yes – committed immediately |
 | `przebiegi/dead-letter/<agent>.md` | pausing an agent after a series of errors (check `martwe`) | yes – committed immediately |
 | `bezpieczenstwo/HALT` | stopping the fleet after the organisation budget is exhausted (check `budzety`) | yes – committed immediately |
 
@@ -405,7 +437,7 @@ no laptop needed.
    | Secret | What for | Without it |
    |---|---|---|
    | `STRAZNIK_TOKEN` | GitHub token with read access to product repo PRs and write access to the organisation repo | the Actions run token is used – only the organisation repo works, product repo PRs will be a source error |
-   | `STRAZNIK_RESEND_KEY` | Resend key for alert e-mails | alert without e-mail: entry in `zlecenia/ceo.md` and the event log |
+   | `STRAZNIK_RESEND_KEY` | Resend key for alert e-mails | alert without e-mail: entry in the addressee's inbox and the event log |
 
 3. **State** (`ceo/straznik.json`) is carried between runs in the Actions cache – it does not go into the repo.
 4. **Plugins.** Add their variables (`STRAZNIK_ASC…`, `STRAZNIK_SUPABASE_PROJEKT`, `STRAZNIK_SEKRET_…` etc.) to the
@@ -457,7 +489,7 @@ nothing, but it writes state, events and `Pilne` entries in the `repo/` director
 Every real run starts with `git pull --no-rebase` in the working repo. The watchdog never uses `git stash`,
 `git reset` or a forced push – it does not revert anyone else's changes.
 
-**Ordinary collision.** When pull refuses because the watchdog's own files (`ceo/straznik-zdarzenia.md`, `zlecenia/ceo.md`)
+**Ordinary collision.** When pull refuses because the watchdog's own files (`ceo/straznik-zdarzenia.md`, the inboxes `zlecenia/*.md`)
 have uncommitted changes, the watchdog makes a local commit of them, retries the pull and pushes the result. This needs
 nobody's attention.
 
@@ -469,7 +501,7 @@ nobody's attention.
    - it computes the remaining checks on a snapshot of origin's main branch (a read-only copy in a temporary directory);
    - it writes events locally and commits nothing in the clone;
    - it does not create dead-letter or `HALT` files;
-   - it adds `Pilne` entries – including the alert about the clone itself – to `zlecenia/ceo.md` through a temporary
+   - it adds `Pilne` entries – including the alert about the clone itself – to the addressees' inboxes through a temporary
      worktree from origin's main branch (commit of that file only, plain push, worktree removed), so the alert is not lost.
 
 **Repair (operator, manually):**
@@ -520,7 +552,8 @@ starts from a fresh checkout, so in practice this situation only concerns launch
 | `STRAZNIK_GH_ORG` | owner of the repos on GitHub – overrides the owner from `repo.github` | from `org.yaml` |
 | `GH_TOKEN` | token for `gh` | `gh` login |
 | `STRAZNIK_MAIL_OD` | sender of alert e-mails | `Strażnik floty <straznik@<domena z org.yaml>>` |
-| `STRAZNIK_MAIL_DO` | recipient of alert e-mails | `ludzie.operator.kontakt_firmowy` |
+| `STRAZNIK_MAIL_WLASCICIEL` | the owner's e-mail (owner level) | `ludzie.wlasciciel.kontakt_firmowy` |
+| `STRAZNIK_MAIL_DO` | the operator's e-mail – a copy from the CEO level up (both addresses given to `instaluj.sh` go only into the plist; reinstalling without them keeps the previous ones) | `ludzie.operator.kontakt_firmowy` |
 | `STRAZNIK_RESEND_KEY` | Resend key | keychain; without a key the e-mail is skipped |
 | `STRAZNIK_SEKRET_<USLUGA>` | a service secret instead of the keychain | keychain |
 | `STRAZNIK_POMIN_TYTUL` | regular expression for PR titles skipped in the `pr` check – overrides `straznik.pomin_tytul` | none (nothing is skipped) |

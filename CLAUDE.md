@@ -23,7 +23,9 @@ Models and billing: `flota/zadania.yaml` gives the model class (`sedzia`, `mocny
 identifiers live only in `org.yaml → runtime.modele` – never write a model ID anywhere else. The fleet works on ONE account
 (`ceo/handoff/konto-floty.md`) – never switch it to another person's account. `org.yaml → runtime.rozliczenie`: `team` or
 `api`. Cost of every run: `python3 -I scripts/koszt.py zapisz --agent <agent>` (report: `koszt.py raport`). Updates and
-improvement proposals to the template: `procesy/15-rozwoj-szablonu.md`.
+improvement proposals to the template: `procesy/15-rozwoj-szablonu.md`; exchange of discoveries and releases between
+project CEOs and the publisher, and measuring how closely the skeleton matches the template
+(`python3 -I scripts/zgodnosc.py`): `procesy/16-wymiana-ceo.md`.
 
 This is the free core: files may still refer to roles, policies and processes of the full template that are not here
 (`docs/poza-rdzeniem.md`) – skip them, do not recreate them from memory.
